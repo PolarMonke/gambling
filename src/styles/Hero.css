@@ -1,3 +1,6 @@
+.hero-container {
+    position: relative;
+}
 .hero {
     display: flex;
     justify-content: center;
@@ -13,7 +16,40 @@
 }
 .splash-image {
     height: 700px;
+    width: auto;
+    object-fit: cover;
+    object-position: center;
 }
+
+.primogem {
+    position: absolute;
+    transform: rotate(20deg);
+    width: 150px;
+    top: 0%;
+    left: 30%;
+}
+.diamond {
+    position: absolute;
+    transform: rotate(-15deg);
+    width: 150px;
+    top: 10%;
+    right: 1%;
+}
+.watermelon {
+    position: absolute;
+    width: 150px;
+    bottom: 1%;
+    left: 2%;
+}
+.banana {
+    position: absolute;
+    transform: rotate(-20deg);
+    width: 150px;
+    height: auto;
+    bottom: 1%;
+    right: 2%;
+}
+
 @media screen and (max-width: 1200px) {
     .main-text {
         font-size: 50pt;
@@ -29,5 +65,30 @@
     .main-text {
         flex-direction: row;
         margin-top: 100px;
+    }
+    .splash-image {
+        height: 600px;
+    }
+    .primogem {
+        top: -5%;
+    }
+    .diamond {
+        height: 100px;
+        width: auto;
+    }
+    .watermelon {
+        bottom: -5%;
+    }
+    .banana {
+        bottom: -4%;
+    }
+}
+@media screen and (max-width: 650px) {
+    .primogem {
+        top: 35%;
+        left: 0;
+    }
+    .diamond {
+        top: 40%;
     }
 }
