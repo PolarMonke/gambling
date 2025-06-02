@@ -1,0 +1,33 @@
+.hero {
+    display: flex;
+    justify-content: center;
+}
+.main-text {
+    font-size: 70pt;
+    font-weight: 800;
+    font-style: italic;
+    text-align: end;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.splash-image {
+    height: 700px;
+}
+@media screen and (max-width: 1200px) {
+    .main-text {
+        font-size: 50pt;
+    }
+    .splash-image {
+        height: 500px;
+    }
+}
+@media screen and (max-width: 900px) {
+    .hero {
+        flex-direction: column;
+    }
+    .main-text {
+        flex-direction: row;
+        margin-top: 100px;
+    }
+}

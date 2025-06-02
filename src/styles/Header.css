@@ -1,0 +1,27 @@
+header {
+    display: flex;
+    justify-content: space-between;
+    padding: 30px;
+    max-height: 120px;
+}
+header img {
+    margin-top: -30px;
+    height: 200px;
+    filter: invert();
+}
+header .header-items {
+    display: flex;
+    justify-content: space-between;
+    font-weight: 600;
+    gap: 30px;
+    font-size: 25pt;
+}
+header .header-items div {
+    cursor: pointer;
+}
+
+@media screen and (max-width: 650px) {
+    header {
+        flex-direction: column;
+    }
+}
