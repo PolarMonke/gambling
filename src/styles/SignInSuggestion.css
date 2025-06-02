@@ -1,0 +1,38 @@
+.sign-in-suggestion {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 50px;
+    flex-wrap: wrap;
+    overflow-x: auto;
+    margin: 50px 0px;
+}
+.block {
+    padding: 30px;
+    border-radius: 1rem;
+    background-color: #494949;
+    width: 400px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+    font-size: 30pt;
+}
+.block div {
+    margin: 10px;
+}
+.block button {
+    outline: none;
+    border: none;
+    padding: 10px;
+    background-color: #00BE29;
+    border-radius: 1rem;
+    color: white;
+    font-size: 30pt;
+    cursor: pointer;
+}
+.chips {
+    width: 300px;
+    height: auto;
+    object-fit: cover;      
+}
