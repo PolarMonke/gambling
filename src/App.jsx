@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Header from './components/Header';
 import Home from './pages/Home'
+import SignIn from './pages/SignIn';
 
 function App() {
 
@@ -12,6 +13,7 @@ function App() {
         <main>
           <Routes>
             <Route path="/" element={<Home />} />
+            <Route path='/signin' element={<SignIn/>} />
           </Routes>
         </main>
       </Router>
