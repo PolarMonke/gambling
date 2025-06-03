@@ -1,10 +1,11 @@
 import React from "react"
 import '../styles/Header.css'
+import { Link } from "react-router-dom"
 
 const Header = () => {
     return (
         <header>
-            <img src="src/assets/logo.svg" alt="logo" />
+            <Link to={"/"}><img src="src/assets/logo.svg" alt="logo" /></Link>
             <div className="header-items">
                 <div>Slots</div>
                 <div>Gacha</div>

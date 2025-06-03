@@ -9,6 +9,7 @@ header img {
     height: 200px;
     width: auto;
     filter: invert();
+    cursor: pointer;
 }
 header .header-items {
     display: flex;
@@ -24,5 +25,6 @@ header .header-items div {
 @media screen and (max-width: 650px) {
     header {
         flex-direction: column;
+        margin-bottom: 100px;
     }
 }

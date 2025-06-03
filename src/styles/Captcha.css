@@ -1,13 +1,12 @@
 .slot-machine-container {
-  font-family: 'Arial', sans-serif;
+  font-family: 'Montserrat', sans-serif;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   padding: 2rem;
-  background: #f5f5f5;
-  border-radius: 12px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  background: #494949;
+  border-radius: 1rem;
   max-width: 500px;
   margin: 0 auto;
   text-align: center;
@@ -15,13 +14,13 @@
 
 .slot-machine-container h1 {
   margin: 0 0 1rem 0;
-  color: #333;
+  color: #ffffff;
   font-size: 1.8rem;
 }
 
 .slot-machine-container p {
   margin: 0 0 1.5rem 0;
-  color: #666;
+  color: #ffffff;
   font-size: 1rem;
 }
 
@@ -43,9 +42,6 @@
   height: 100%;
   background: white;
   border-radius: 8px;
-  box-shadow: 
-    0 2px 10px rgba(0, 0, 0, 0.1),
-    inset 0 0 0 2px #ddd;
   overflow: hidden;
   position: relative;
   transform-style: preserve-3d;
@@ -96,20 +92,18 @@
 .slot-machine-container button {
   padding: 0.8rem 1.5rem;
   font-size: 1rem;
-  background: #4a6bff;
+  background: #00BE29;
   color: white;
   border: none;
   border-radius: 6px;
   cursor: pointer;
   transition: all 0.3s ease;
   font-weight: 600;
-  box-shadow: 0 2px 5px rgba(74, 107, 255, 0.3);
 }
 
 .slot-machine-container button:hover {
-  background: #3a5bef;
+  background: #00BE29;
   transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(74, 107, 255, 0.3);
 }
 
 .slot-machine-container button:disabled {
@@ -131,12 +125,12 @@
 
 .message.success {
   background: rgba(76, 175, 80, 0.2);
-  color: #2e7d32;
+  color: white;
 }
 
 .message.error {
   background: rgba(244, 67, 54, 0.2);
-  color: #c62828;
+  color: white;
 }
 
 @keyframes winPulse {
