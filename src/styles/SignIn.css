@@ -1,0 +1,67 @@
+.sign-in-container {
+    max-width: 500px;
+    margin: 2rem auto;
+    padding: 2rem;
+    border-radius: 1rem;
+    background-color: #494949;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.form-switcher {
+    display: flex;
+    margin-bottom: 1.5rem;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.form-switcher button {
+    flex: 1;
+    padding: 0.8rem;
+    border: none;
+    background: none;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #fff;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border-bottom: 3px solid transparent;
+}
+
+.form-switcher button.active {
+    color: #00BE29;
+}
+
+.form-switcher button:hover:not(.active) {
+    color: #00BE29;
+    
+}
+
+.submit-button {
+    width: 100%;
+    padding: 0.8rem;
+    margin-top: 1.5rem;
+    background-color: #00BE29;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.submit-button:hover {
+    background-color: #00BE29;
+}
+
+.submit-button:disabled {
+    background-color: #9eaf9c;
+    cursor: not-allowed;
+}
+
+.captcha-container {
+    margin: 1.5rem 0;
+    padding: 1rem;
+    border: 1px solid #e5e7eb;
+    border-radius: 6px;
+    background-color: #f9fafb;
+}
