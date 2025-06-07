@@ -1,7 +1,7 @@
 import { featuredGames } from '../data/games';
 import { GameCard } from './GameCard';
 import '../styles/FeaturedGamesList.css'
-export const FeaturedGameList = () => {
+export const FeaturedGamesList = () => {
     return (
         <div className="featured-games">
             {featuredGames.map(game => (
