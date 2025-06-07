@@ -1,21 +1,15 @@
 import { useState } from "react";
 import "../styles/LogInForm.css";
 
-const LogInForm = () => {
-    const [formData, setFormData] = useState({
-        username: '',
-        password: ''
-    })
-    const [error, setError] = useState('');
-
+const LogInForm = ({ setFormData }) => {
     const handleInputChange = (e) => {
         const { name, value } = e.target;
-        setFormData({
-        ...formData,
-        [name]: value
-        });
+        setFormData((prevData) => ({
+            ...prevData,
+            [name]: value
+        }));
     };
-  
+
     return (
         <form className="login-form">
             <div className="form-group">
@@ -23,7 +17,6 @@ const LogInForm = () => {
                 <input
                     type="text"
                     name="username"
-                    value={formData.username}
                     onChange={handleInputChange}
                     required
                 />
@@ -33,13 +26,11 @@ const LogInForm = () => {
                 <input
                     type="password"
                     name="password"
-                    value={formData.password}
                     onChange={handleInputChange}
                     required
                 />
             </div>
-            {error && <div className="error-message">{error}</div>}
         </form>
-    )
-}
+    );
+};
 export default LogInForm;

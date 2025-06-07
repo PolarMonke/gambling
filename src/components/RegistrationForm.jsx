@@ -1,22 +1,15 @@
 import { useState } from "react";
 import "../styles/RegistrationForm.css";
 
-const RegistrationForm = () => {
-    const [formData, setFormData] = useState({
-        username: '',
-        email: '',
-        password: '',
-        confirmPassword: ''
-    });
-
-    const [error, setError] = useState('');
+const RegistrationForm = ({ setFormData }) => {
+    const [localError, setLocalError] = useState('');
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
-        setFormData({
-            ...formData,
+        setFormData((prevData) => ({
+            ...prevData,
             [name]: value
-        });
+        }));
     };
 
     return (
@@ -26,7 +19,6 @@ const RegistrationForm = () => {
                 <input
                     type="text"
                     name="username"
-                    value={formData.username}
                     onChange={handleInputChange}
                     required
                 />
@@ -36,7 +28,6 @@ const RegistrationForm = () => {
                 <input
                     type="email"
                     name="email"
-                    value={formData.email}
                     onChange={handleInputChange}
                     required
                 />
@@ -46,7 +37,6 @@ const RegistrationForm = () => {
                 <input
                     type="password"
                     name="password"
-                    value={formData.password}
                     onChange={handleInputChange}
                     required
                 />
@@ -56,13 +46,12 @@ const RegistrationForm = () => {
                 <input
                     type="password"
                     name="confirmPassword"
-                    value={formData.confirmPassword}
                     onChange={handleInputChange}
                     required
                 />
             </div>
-            {error && <div className="error-message">{error}</div>}
+            {localError && <div className="error-message">{localError}</div>}
         </form>
-    )
-}
+    );
+};
 export default RegistrationForm;
