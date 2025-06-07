@@ -13,6 +13,11 @@ const SignIn = () => {
     const [formData, setFormData] = useState({}); // Store form data in SignIn
     const navigate = useNavigate();
 
+    const handleFormSwitch = (formType) => {
+        setActiveForm(formType);
+        setFormData({});
+    };
+
     const handleRegister = async () => {
         if (!isCaptchaVerified) {
             setError('Please verify you are not a robot');
@@ -21,7 +26,7 @@ const SignIn = () => {
         setIsLoading(true);
         setError('');
 
-        console.log("Registering with data:", formData); // Debugging
+        console.log("Registering with data:", formData);
 
         try {
             const response = await fetch('http://localhost:5062/api/auth/register', {
@@ -61,7 +66,7 @@ const SignIn = () => {
         setIsLoading(true);
         setError('');
 
-        console.log("Logging in with data:", formData); // Debugging
+        console.log("Logging in with data:", formData);
 
         try {
             const response = await fetch('http://localhost:5062/api/auth/login', {
@@ -95,13 +100,13 @@ const SignIn = () => {
             <div className="form-switcher">
                 <button 
                     className={activeForm === 'login' ? 'active' : ''}
-                    onClick={() => setActiveForm('login')}
+                    onClick={() => handleFormSwitch('login')}
                 >
                     Login
                 </button>
                 <button 
                     className={activeForm === 'register' ? 'active' : ''}
-                    onClick={() => setActiveForm('register')}
+                    onClick={() => handleFormSwitch('register')}
                 >
                     Register
                 </button>
