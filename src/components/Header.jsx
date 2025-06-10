@@ -1,6 +1,7 @@
 import React from "react"
 import '../styles/Header.css'
 import { Link } from "react-router-dom"
+import { Logo } from "./Logo"
 
 const Header = () => {
     const isLoggedIn = () => {
@@ -9,11 +10,12 @@ const Header = () => {
 
     return (
         <header>
-            <Link to={"/"}><img src="src/assets/logo.svg" alt="logo" /></Link>
+            <Logo />
             <div className="header-items">
                 <div>Slots</div>
                 <div>Gacha</div>
                 {isLoggedIn ? (<div>Quests</div>) : (<div>LogIn</div>)}
+                {/* <Link to={'/signin'}>SignIn</Link> */}
             </div>
         </header>
     )

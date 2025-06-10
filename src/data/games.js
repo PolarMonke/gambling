@@ -7,8 +7,8 @@ export const allGames = [
   },
   {
     id: 'roulette',
-    name: 'Roulette',
-    image: 'src/assets/games/roulette.avif',
+    name: 'Backshot Roulette',
+    image: 'src/assets/games/backshot.jpg',
     component: 'RouletteGame'
   },
   {
