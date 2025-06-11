@@ -23,7 +23,6 @@ export const allGames = [
     image: 'src/assets/games/golden-rain.jpg',
     component: 'GoldenShowerGame'
   }
-  // Add more games here
 ];
 
 export const featuredGames = allGames.slice(0, 4);

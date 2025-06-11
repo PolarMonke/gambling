@@ -1,9 +1,8 @@
-/* Container */
 .container {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
+  padding: 100px;
 }
 
 .start-menu {
@@ -19,6 +18,7 @@
   font-size: 20px;
   padding: 10px 20px;
   background: gold;
+  color: rgb(45, 45, 7);
   border: none;
   cursor: pointer;
   border-radius: 5px;
@@ -29,8 +29,12 @@
   width: 400px;
   height: 500px;
   background: #333;
-  border: 2px solid white;
+  padding: 10px;
+  border-radius: 1rem;
   overflow: hidden;
+}
+.game-area h2 {
+    color: white;
 }
 
 .balance {
@@ -65,6 +69,7 @@
 .controls {
   position: fixed;
   left: 50%;
+  bottom: 0;
   transform: translateX(-50%);
   display: flex;
   gap: 10px;
