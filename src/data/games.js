@@ -18,10 +18,10 @@ export const allGames = [
     component: 'MinesweeperGame'
   },
   {
-    id: 'golden-rain',
-    name: 'Golden Rain',
+    id: 'golden-shower',
+    name: 'Golden Shower',
     image: 'src/assets/games/golden-rain.jpg',
-    component: 'GoldenRainGame'
+    component: 'GoldenShowerGame'
   }
   // Add more games here
 ];
