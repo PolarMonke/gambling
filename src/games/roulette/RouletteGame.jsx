@@ -72,56 +72,57 @@ export const RouletteGame = () => {
   };
 
   const spinBottle = () => {
-    setIsPlayerEliminated(false);
-    setZones(calculateZones(players));
-    
+    if (gamePhase === 'spinning') return;
     setGamePhase('spinning');
     setEliminatedPlayer(null);
     setHasRotated(false);
+
     const newZones = calculateZones(players);
     setZones(newZones);
-    if (newZones == []) return;
-    console.log("newZones", newZones);
-    console.log("zones", zones);
+    if (newZones.length === 0) return;
 
     speedRef.current = 0;
     const activePlayersCount = players.filter(p => !p.eliminated).length;
     speedRef.current = Math.max(10, 30 + Math.random() * 20 - activePlayersCount * 2);
 
     spinInterval.current = setInterval(() => {
-      setRotation(prev => {
-        speedRef.current *= 0.98;
+        setRotation(prev => {
+            speedRef.current *= 0.98;
 
-        if (speedRef.current < 0.5) {
-          clearInterval(spinInterval.current);
+            if (speedRef.current < 0.5) {
+                clearInterval(spinInterval.current);
 
-          const normalizedRotation = prev % 360;
-          const activeZones = newZones;
-          const winningZone = activeZones.find(zone =>
-            (normalizedRotation >= zone.startAngle && normalizedRotation < zone.endAngle) ||
-            (zone.startAngle > zone.endAngle && (normalizedRotation >= zone.startAngle || normalizedRotation < zone.endAngle))
-          );
-          // console.log(winningZone);
-          // console.log(hasRotated);
-          if (winningZone && !hasRotated) {
-            setHasRotated(true);
-            const losingPlayerId = players.findIndex(p => p.id === winningZone.playerId && !p.eliminated);
-            if (losingPlayerId >= 0 && !isPlayerEliminated) {
-              setGamePhase('results');
-              eliminatePlayer(losingPlayerId);
-              setIsPlayerEliminated(true);
+                const normalizedRotation = prev % 360;
+                const winningZone = newZones.find(zone =>
+                    (normalizedRotation >= zone.startAngle && normalizedRotation < zone.endAngle) ||
+                    (zone.startAngle > zone.endAngle && (normalizedRotation >= zone.startAngle || normalizedRotation < zone.endAngle))
+                );
+
+                if (winningZone && !hasRotated) {
+                    setHasRotated(true);
+                    const losingPlayerId = players.findIndex(p => p.id === winningZone.playerId && !p.eliminated);
+                    if (losingPlayerId >= 0 && !isPlayerEliminated) {
+                        eliminatePlayer(losingPlayerId);
+                    }
+                }
+                return prev;
             }
-          }
-          return prev;
-        }
-        return prev + speedRef.current;
-      });
+            return prev + speedRef.current;
+        });
     }, 16);
   };
 
+  const playEliminationSound = () => {
+    const randomNumber = Math.floor(Math.random() * 6) + 1;
+    const audio = new Audio(`/src/assets/games/BackshotRoulette/aah${randomNumber}.mp3`);
+    audio.play();
+  };
 
   const eliminatePlayer = (id) => {
+    if (isPlayerEliminated) return;
+    setIsPlayerEliminated(true);
     setGamePhase('results');
+    playEliminationSound();
 
     setTimeout(() => {
       const updatedPlayers = [...players];
@@ -148,26 +149,36 @@ export const RouletteGame = () => {
       } else if (eliminated.name === 'You' || eliminated.id === 0) {
         setGamePhase('gameOver');
       } else {
-        spinBottle();
+        setTimeout(() => {
+            setIsPlayerEliminated(false);
+            spinBottle();
+        }, 1000);
       }
     }, 2000);
     };
 
 
   const resetGame = () => {
-    setPlayers([
-      { id: 0, name: 'You', isUser: true, bet: 0, eliminated: false, balance: 1000 },
-      { id: 1, name: 'Bot 1', isUser: false, bet: 0, eliminated: false, balance: 1000 },
-      { id: 2, name: 'Bot 2', isUser: false, bet: 0, eliminated: false, balance: 1000 },
-      { id: 3, name: 'Bot 3', isUser: false, bet: 0, eliminated: false, balance: 1000 },
-      { id: 4, name: 'Bot 4', isUser: false, bet: 0, eliminated: false, balance: 1000 },
-      { id: 5, name: 'Bot 5', isUser: false, bet: 0, eliminated: false, balance: 1000 },
-    ]);
-    setGamePhase('betting');
-    setRotation(0);
-    setCurrentBet(0);
-    setWinner(null);
-    setEliminatedPlayer(null);
+      clearInterval(spinInterval.current); // Stop any ongoing spin
+      speedRef.current = 0; // Reset speed reference
+
+      setPlayers([
+          { id: 0, name: 'You', isUser: true, bet: 0, eliminated: false, balance: 1000 },
+          { id: 1, name: 'Bot 1', isUser: false, bet: 0, eliminated: false, balance: 1000 },
+          { id: 2, name: 'Bot 2', isUser: false, bet: 0, eliminated: false, balance: 1000 },
+          { id: 3, name: 'Bot 3', isUser: false, bet: 0, eliminated: false, balance: 1000 },
+          { id: 4, name: 'Bot 4', isUser: false, bet: 0, eliminated: false, balance: 1000 },
+          { id: 5, name: 'Bot 5', isUser: false, bet: 0, eliminated: false, balance: 1000 },
+      ]);
+
+      setGamePhase('betting');
+      setRotation(0);
+      setCurrentBet(0);
+      setWinner(null);
+      setEliminatedPlayer(null);
+      setEliminatedPlayers([]);
+      setIsPlayerEliminated(false);
+      setZones(calculateZones(players));
   };
 
   return (
@@ -269,6 +280,9 @@ export const RouletteGame = () => {
           </div>
         )}
       </div>
+
+      {/* decorations */}
+
     </div>
   );
 }
