@@ -1,6 +1,7 @@
 .game-container {
   max-width: 800px;
   margin: 0 auto;
+  margin-top: 40px;
   padding: 20px;
   text-align: center;
   font-family: Arial, sans-serif;
@@ -40,6 +41,11 @@
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
   transform: rotate(calc(-1 * var(--angle)));
   text-align: center;
+}
+
+.player-image {
+  height: 100px;
+  width: auto;
 }
 
 .player-name {
@@ -85,25 +91,13 @@
 
 .bottle {
   width: 40px;
-  height: 80px;
-  margin: 10px auto;
-  background-color: #8BC34A;
-  border-radius: 5px 5px 20px 20px;
+  height: auto;
   position: relative;
+  top: -40px;
   transition: transform 0.1s ease-out;
-  transform-origin: center 20px;
+  transform-origin: center center;
 }
 
-.bottle:after {
-  content: '';
-  position: absolute;
-  width: 10px;
-  height: 20px;
-  background-color: #4CAF50;
-  top: -10px;
-  left: 15px;
-  border-radius: 5px;
-}
 
 .zone-indicator {
   position: absolute;
@@ -118,7 +112,7 @@
 }
 
 .game-controls {
-  margin-top: 20px;
+  margin-top: 120px;
   padding: 20px;
   background-color: #f9f9f9;
   border-radius: 10px;

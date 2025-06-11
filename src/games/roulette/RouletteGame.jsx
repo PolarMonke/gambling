@@ -14,26 +14,39 @@ export const RouletteGame = () => {
 
   const [gamePhase, setGamePhase] = useState('betting');
   const [rotation, setRotation] = useState(0);
+  const [hasRotated, setHasRotated] = useState(false);
   const [currentBet, setCurrentBet] = useState(0);
   const [winner, setWinner] = useState(null);
-  const [eliminatedPlayer, setEleminatedPlayer] = useState(null);
+  const [eliminatedPlayer, setEliminatedPlayer] = useState(null);
+  const [isPlayerEliminated, setIsPlayerEliminated] = useState(false);
+  const [eliminatedPlayers, setEliminatedPlayers] = useState([]);
+  const [zones, setZones] = useState(null);  
+  
   const bottleRef = useRef(null);
   const spinInterval = useRef(null);
   const speedRef = useRef(0);
 
-  const calculateZones = () => {
-    const activePlayers = players.filter(p => !p.eliminated);
+  const calculateZones = (latestPlayers) => {
+    const activePlayers = latestPlayers.filter(p => !p.eliminated);
+    // console.log('active players', activePlayers)
     const zoneSize = 360 / activePlayers.length;
     
     return activePlayers.map((player, index) => ({
       playerId: player.id,
       startAngle: index * zoneSize,
       endAngle: (index + 1) * zoneSize,
-      centerAngle: index * zoneSize + zoneSize / 2
+      centerAngle: index * zoneSize + zoneSize / 2,
+      eleminated: player.eliminated
     }));
   };
 
-  const [zones, setZones] = useState(calculateZones());
+  useEffect(() => {
+    setZones(calculateZones(players));
+  }, [players]);
+
+  useEffect(() => {
+    console.log("Updated zones:", zones);
+  }, [zones]);
 
   const placeBet = () => {
     if (currentBet <= 0 || currentBet > players[0].balance) return;
@@ -55,72 +68,91 @@ export const RouletteGame = () => {
     }
 
     setPlayers(updatedPlayers);
-    setZones(calculateZones());
     spinBottle();
   };
 
   const spinBottle = () => {
+    setIsPlayerEliminated(false);
+    setZones(calculateZones(players));
+    
     setGamePhase('spinning');
-    // setEleminatedPlayer(null);
-    speedRef.current = 30 + Math.random() * 20;
+    setEliminatedPlayer(null);
+    setHasRotated(false);
+    const newZones = calculateZones(players);
+    setZones(newZones);
+    if (newZones == []) return;
+    console.log("newZones", newZones);
+    console.log("zones", zones);
+
+    speedRef.current = 0;
+    const activePlayersCount = players.filter(p => !p.eliminated).length;
+    speedRef.current = Math.max(10, 30 + Math.random() * 20 - activePlayersCount * 2);
 
     spinInterval.current = setInterval(() => {
       setRotation(prev => {
-        speedRef.current *= 0.99;
+        speedRef.current *= 0.98;
 
-        if (speedRef.current < 0.1) {
+        if (speedRef.current < 0.5) {
           clearInterval(spinInterval.current);
 
           const normalizedRotation = prev % 360;
-          const activeZones = zones;
+          const activeZones = newZones;
           const winningZone = activeZones.find(zone =>
-          (normalizedRotation >= zone.startAngle && normalizedRotation < zone.endAngle) ||
-          (zone.startAngle > zone.endAngle && (normalizedRotation >= zone.startAngle || normalizedRotation < zone.endAngle))
+            (normalizedRotation >= zone.startAngle && normalizedRotation < zone.endAngle) ||
+            (zone.startAngle > zone.endAngle && (normalizedRotation >= zone.startAngle || normalizedRotation < zone.endAngle))
           );
-
-          if (winningZone) {
+          // console.log(winningZone);
+          // console.log(hasRotated);
+          if (winningZone && !hasRotated) {
+            setHasRotated(true);
             const losingPlayerId = players.findIndex(p => p.id === winningZone.playerId && !p.eliminated);
-            if (losingPlayerId >= 0) {
-              eleminatePlayer(losingPlayerId);
+            if (losingPlayerId >= 0 && !isPlayerEliminated) {
+              setGamePhase('results');
+              eliminatePlayer(losingPlayerId);
+              setIsPlayerEliminated(true);
             }
           }
           return prev;
         }
         return prev + speedRef.current;
       });
-    }, 16)
-  }
+    }, 16);
+  };
 
-  const eleminatePlayer = (id) => {
+
+  const eliminatePlayer = (id) => {
     setGamePhase('results');
-    setEleminatedPlayer(id);
 
     setTimeout(() => {
       const updatedPlayers = [...players];
-      const eleminatedPlayer = updatedPlayers[id];
-      eliminatedPlayer.eliminated = true;
-      
-      const activePlayers = updatedPlayers.filter(p => !p.eliminated && p.id != eleminatedPlayer.id);
-      const share = Math.floor(eleminatePlayer.bet / activePlayers.length);
-      
+      const eliminated = updatedPlayers[id];
+      if (!eliminated) return;
+
+      updatedPlayers[id].eliminated = true;
+      setEliminatedPlayer(eliminated);
+      setEliminatedPlayer([...eliminatedPlayers, eliminated]);
+
+      const activePlayers = updatedPlayers.filter(p => !p.eliminated);
+      let share = 0;
+      share = Math.floor(eliminated.bet / activePlayers.length);
+
       activePlayers.forEach(p => {
         p.balance += share;
       });
 
-      setPlayers(activePlayers);
+      setPlayers(updatedPlayers);
 
-      const remainingPlayers = updatedPlayers.filter(p => !p.eliminated);
-      if (remainingPlayers.length === 1) {
-        setWinner(remainingPlayers[0]);
+      if (activePlayers.length === 1) {
+        setWinner(activePlayers[0]);
         setGamePhase('gameOver');
-      } else if (eliminatedPlayer.name === 'You' || eliminatedPlayer.id === 0) {
+      } else if (eliminated.name === 'You' || eliminated.id === 0) {
         setGamePhase('gameOver');
       } else {
-        setZones(calculateZones());
-        setGamePhase('spinning');
+        spinBottle();
       }
     }, 2000);
-  }
+    };
+
 
   const resetGame = () => {
     setPlayers([
@@ -136,11 +168,7 @@ export const RouletteGame = () => {
     setCurrentBet(0);
     setWinner(null);
     setEliminatedPlayer(null);
-    setZones(calculateZones());
   };
-
-
-
 
   return (
     <div className="game-container">
@@ -152,7 +180,7 @@ export const RouletteGame = () => {
             // Calculate position around the circle
             const angle = (360 / players.length) * index;
             const radian = (angle * Math.PI) / 180;
-            const radius = 150; // Distance from center
+            const radius = 250; // Distance from center
             const x = Math.sin(radian) * radius;
             const y = -Math.cos(radian) * radius;
             
@@ -167,6 +195,7 @@ export const RouletteGame = () => {
                 }}
               >
                 <div className="player-info">
+                  <img src={'/src/assets/games/BackshotRoulette/guy'+(player.id+1)+'.jpg'} className='player-image' />
                   <div className="player-name">{player.name}</div>
                   <div className="player-balance">${player.balance}</div>
                   {player.bet > 0 && <div className="player-bet">Bet: ${player.bet}</div>}
@@ -178,15 +207,15 @@ export const RouletteGame = () => {
         
         {/* Bottle */}
         <div className="bottle-container">
-          <div 
+          <img src="/src/assets/games/BackshotRoulette/bottle.webp" 
+            alt="bottle" 
             className="bottle" 
-            ref={bottleRef}
-            style={{ transform: `rotate(${rotation}deg)` }}
-          ></div>
+            ref={bottleRef} 
+            style={{ transform: `rotate(${rotation}deg)` }}/>
         </div>
         
         {/* Zone indicators (for debugging) */}
-        {zones.map((zone, index) => (
+        {/* {zones.map((zone, index) => (
           <div 
             key={index}
             className="zone-indicator"
@@ -195,7 +224,7 @@ export const RouletteGame = () => {
               opacity: 0.3
             }}
           ></div>
-        ))}
+        ))} */}
       </div>
       
       {/* Game controls */}
@@ -225,9 +254,9 @@ export const RouletteGame = () => {
         
         {gamePhase === 'results' && (
           <div className="results-phase">
-            <h2>{players[eliminatedPlayer]?.name} has been eliminated!</h2>
-            <p>Their ${players[eliminatedPlayer]?.bet} has been split among remaining players.</p>
-            <button onClick={spinBottle}>Spin Again</button>
+            <h2>Player has been eliminated!</h2>
+            <p>Their bet has been split among remaining players.</p>
+            {/* <button onClick={spinBottle}>Spin Again</button> */}
           </div>
         )}
         
