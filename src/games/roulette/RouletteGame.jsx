@@ -28,7 +28,6 @@ export const RouletteGame = () => {
 
   const calculateZones = (latestPlayers) => {
     const activePlayers = latestPlayers.filter(p => !p.eliminated);
-    // console.log('active players', activePlayers)
     const zoneSize = 360 / activePlayers.length;
     
     return activePlayers.map((player, index) => ({
@@ -188,10 +187,9 @@ export const RouletteGame = () => {
         {/* Players */}
         <div className="players-container">
           {players.map((player, index) => {
-            // Calculate position around the circle
             const angle = (360 / players.length) * index;
             const radian = (angle * Math.PI) / 180;
-            const radius = 250; // Distance from center
+            const radius = 250; 
             const x = Math.sin(radian) * radius;
             const y = -Math.cos(radian) * radius;
             
@@ -282,7 +280,10 @@ export const RouletteGame = () => {
       </div>
 
       {/* decorations */}
-
+      <img src="/src/assets/games/BackshotRoulette/gag.webp" className="decoration gag" />
+      <img src="/src/assets/games/BackshotRoulette/handcuffs.webp" className="decoration handcuffs" />
+      <img src="/src/assets/games/BackshotRoulette/male.png" className="decoration male" />
+      <img src="/src/assets/games/BackshotRoulette/buttplug.png" className="decoration buttplug" />
     </div>
   );
 }

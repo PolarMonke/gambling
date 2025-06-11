@@ -6,6 +6,7 @@
   text-align: center;
   font-family: Arial, sans-serif;
   color: black;
+  position: relative;
 }
 
 .game-board {
@@ -173,4 +174,28 @@
 
 .game-over-phase button:hover {
   background-color: #0b7dda;
+}
+
+.decoration {
+  position: absolute;
+  width: 150px;
+  height: auto;
+}
+
+.male {
+  top: -10%;
+  left: -40%;
+}
+.gag {
+  top: -40%;
+  right: -50%;
+}
+.buttplug {
+  bottom: 0%;
+  left: -50%;
+  rotate: -30deg;
+}
+.handcuffs {
+  bottom: 10%;
+  right: -50%;
 }
