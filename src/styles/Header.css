@@ -21,6 +21,11 @@ header .header-items div {
     cursor: pointer;
 }
 
+header .link {
+    color: white;
+    text-decoration: none;
+}
+
 @media screen and (max-width: 650px) {
     header {
         flex-direction: column;

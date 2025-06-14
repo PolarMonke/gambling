@@ -6,6 +6,7 @@ import SignIn from './pages/SignIn';
 import { GamesPage } from './pages/GamesPage';
 import { GamePage } from './pages/GamePage';
 import { allGames } from './data/games';
+import Profile from './pages/Profile';
 
 function App() {
 
@@ -17,6 +18,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path='/signin' element={<SignIn/>} />
+            <Route path="/profile" element={<Profile />} />
             <Route path="/games" element={<GamesPage />} />
             {allGames.map(game => (
               <Route 

@@ -10,7 +10,7 @@ const SignIn = () => {
     const [isCaptchaVerified, setIsCaptchaVerified] = useState(false);
     const [error, setError] = useState('');
     const [isLoading, setIsLoading] = useState(false);
-    const [formData, setFormData] = useState({}); // Store form data in SignIn
+    const [formData, setFormData] = useState({});
     const navigate = useNavigate();
 
     const handleFormSwitch = (formType) => {
