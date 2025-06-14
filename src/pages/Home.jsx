@@ -3,6 +3,7 @@ import Hero from '../components/Hero';
 import SignInSuggestion from '../components/SignInSuggestion';
 import QuestsBox from '../components/QuestsBox';
 import { FeaturedGamesList } from '../components/FeaturedGamesList';
+import Gacha from '../components/Gacha';
 
 const Home = () => {
   const isLoggedIn = () => {
@@ -14,6 +15,7 @@ const Home = () => {
       <Hero />
       {isLoggedIn ? (<QuestsBox/>) : (<SignInSuggestion />)}
       <FeaturedGamesList />
+      <Gacha />
     </div>
   )
 }
