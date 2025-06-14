@@ -3,6 +3,7 @@
     justify-content: center;
     margin-top: 100px;
     margin-bottom: 100px;
+    position: relative;
 }
 
 .quest-box {
@@ -87,3 +88,39 @@
     background-color: #00BE29;
     border-radius: 10px;
 }
+
+.chips {
+    position: absolute;
+    width: 400px;
+    height: auto;
+    top: 20%;
+    z-index: -1;
+}
+#chips1 {
+    left: 0%;
+}
+#chips2 {
+    right: 0%;
+}
+@media screen and (max-width: 1200px) {
+    .chips {
+        width: 300px;
+    }
+    #chips1 {
+        left: -5%;
+    }
+    #chips2 {
+        right: -5%;
+    }
+}
+@media screen and (max-width: 1020px) {
+    .chips {
+        width: 150px;
+    }
+}
+@media screen and (max-width: 1020px) {
+    .chips {
+        visibility: collapse;
+    }
+}
+

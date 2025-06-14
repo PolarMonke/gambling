@@ -47,6 +47,14 @@ export const RouletteGame = () => {
     console.log("Updated zones:", zones);
   }, [zones]);
 
+  useEffect(() => {
+    return () => {
+      if (spinInterval.current) {
+        clearInterval(spinInterval.current);
+      }
+    };
+  }, []);
+
   const placeBet = () => {
     if (currentBet <= 0 || currentBet > players[0].balance) return;
 
@@ -70,7 +78,15 @@ export const RouletteGame = () => {
     spinBottle();
   };
 
+  const hasTriggeredElimination = useRef(false);
   const spinBottle = () => {
+    if (spinInterval.current) {
+      clearInterval(spinInterval.current);
+      spinInterval.current = null;
+    }
+
+    hasTriggeredElimination.current = false;
+    
     if (gamePhase === 'spinning') return;
     setGamePhase('spinning');
     setEliminatedPlayer(null);
@@ -85,31 +101,35 @@ export const RouletteGame = () => {
     speedRef.current = Math.max(10, 30 + Math.random() * 20 - activePlayersCount * 2);
 
     spinInterval.current = setInterval(() => {
-        setRotation(prev => {
-            speedRef.current *= 0.98;
+      setRotation(prev => {
+        speedRef.current *= 0.98;
 
-            if (speedRef.current < 0.5) {
-                clearInterval(spinInterval.current);
+        if (speedRef.current < 0.5) {
+          clearInterval(spinInterval.current);
 
-                const normalizedRotation = prev % 360;
-                const winningZone = newZones.find(zone =>
-                    (normalizedRotation >= zone.startAngle && normalizedRotation < zone.endAngle) ||
-                    (zone.startAngle > zone.endAngle && (normalizedRotation >= zone.startAngle || normalizedRotation < zone.endAngle))
-                );
+          const currentPlayers = playersRef.current;
+          const activePlayers = currentPlayers.filter(p => !p.eliminated);
+          const zoneSize = 360 / activePlayers.length;
+          
+          const normalizedRotation = prev % 360;
+          const winnerIndex = Math.floor(normalizedRotation / zoneSize);
+          const losingPlayerId = activePlayers[winnerIndex]?.id;
 
-                if (winningZone && !hasRotated) {
-                    setHasRotated(true);
-                    const losingPlayerId = players.findIndex(p => p.id === winningZone.playerId && !p.eliminated);
-                    if (losingPlayerId >= 0 && !isPlayerEliminated) {
-                        eliminatePlayer(losingPlayerId);
-                    }
-                }
-                return prev;
-            }
-            return prev + speedRef.current;
-        });
+          if (losingPlayerId !== undefined && !hasTriggeredElimination.current) {
+            hasTriggeredElimination.current = true;
+            eliminatePlayer(losingPlayerId);
+          }
+          return prev;
+        }
+        return prev + speedRef.current;
+      });
     }, 16);
   };
+
+  const playersRef = useRef(players);
+  useEffect(() => {
+    playersRef.current = players;
+  }, [players]);
 
   const playEliminationSound = () => {
     const randomNumber = Math.floor(Math.random() * 6) + 1;

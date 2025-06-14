@@ -46,8 +46,10 @@ const QuestsBox = () => {
                     </div>
                 ))}
             </div>
+            
+            <img src="src/assets/chips.png" className="decoration chips" id="chips1" />
+            <img src="src/assets/chips.png" className="decoration chips" id="chips2" />
         </div>
-
     )
 }
 
