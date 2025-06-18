@@ -28,7 +28,7 @@
     background: linear-gradient(135deg, rgba(255, 215, 0, 0.1) 0%, transparent 100%);
     opacity: 0;
     transition: opacity 0.3s ease;
-    pointer-events: none; /* Add this line */
+    pointer-events: none;
   }
   
   &:hover::before {
@@ -48,6 +48,9 @@
     font-size: 1.3rem;
     margin-bottom: 0.5rem;
   }
+  a {
+    text-decoration: none;
+  }
   
   .play-button {
     display: block;
@@ -63,7 +66,7 @@
     transition: all 0.3s ease;
     border: none;
     cursor: pointer;
-    position: relative; /* Add this to ensure it's above the pseudo-element */
+    position: relative;
     
     &:hover {
       background: linear-gradient(to right, var(--red), #E00);

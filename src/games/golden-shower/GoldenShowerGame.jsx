@@ -1,5 +1,6 @@
 import { useEffect, useState, useRef } from "react";
 import "./GoldenShowerGame.css";
+import { api } from '../../api/mockApi';
 
 export const GoldenShowerGame = () => {
     const [gameStarted, setGameStarted] = useState(false);
@@ -9,6 +10,40 @@ export const GoldenShowerGame = () => {
     const playerXRef = useRef(50);
     const gameLoopRef = useRef(null);
     
+    useEffect(() => {
+        fetchBalance();
+    }, []);
+    
+    const fetchBalance = async () => {
+        try {
+            const data = await api.getProfile();
+            setBalance(data.balance);
+            setPlayers(prev => prev.map(p => 
+            p.id === 0 ? {...p, balance: data.balance} : p
+            ));
+        } catch (error) {
+            console.error('Failed to fetch balance:', error);
+        }
+    };
+    const updateBalance = async (amount) => {
+        try {
+            const data = await api.deposit(amount);
+            setBalance(data.newBalance);
+            return true;
+        } catch (error) {
+            console.error('Failed to update balance:', error);
+            return false;
+        }
+    };
+
+    const recordAction = async (actionName) => {
+        try {
+            await api.recordAction(actionName);
+        } catch (error) {
+            console.error('Failed to record action:', error);
+        }
+    };
+
     const movePlayer = (direction) => {
         if (direction === "left" && playerXRef.current > 0) {
             playerXRef.current -= 5;
@@ -60,19 +95,23 @@ export const GoldenShowerGame = () => {
                 prevCoins
                     .map((coin) => ({ ...coin, y: coin.y + 1.5 }))
                     .filter((coin) => {
-                        if (coin.y > 90 && Math.abs(coin.x - playerXRef.current) < 5) {
-                            setBalance((prev) => prev + coin.value);
+                        if (coin.y > 90) {
+                            if (Math.abs(coin.x - playerXRef.current) < 5) {
+                                updateBalance(coin.value);
+                                recordAction('coin_caught');
+                            } else {
+                                updateBalance(-coin.value);
+                                recordAction('coin_missed');
+                            }
                             return false;
                         }
-                        return coin.y < 100;
+                        return true;
                     })
             );
-
             gameLoopRef.current = requestAnimationFrame(updateGame);
         };
 
         gameLoopRef.current = requestAnimationFrame(updateGame);
-
         return () => cancelAnimationFrame(gameLoopRef.current);
     }, [gameStarted]);
 

@@ -7,38 +7,52 @@
 
 .start-menu {
   text-align: center;
-  color: white;
+  color: var(--white);
 }
 
 .start-menu h1 {
   font-size: 32px;
+  color: var(--gold);
+  text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
 }
 
 .start-menu button {
   font-size: 20px;
   padding: 10px 20px;
-  background: gold;
-  color: rgb(45, 45, 7);
+  background: var(--gold);
+  color: var(--dark-blue);
   border: none;
   cursor: pointer;
   border-radius: 5px;
+  font-weight: bold;
+  transition: all 0.3s ease;
+  box-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
+}
+
+.start-menu button:hover {
+  background: var(--white);
+  box-shadow: 0 0 20px var(--gold);
 }
 
 .game-area {
   position: relative;
   width: 400px;
   height: 500px;
-  background: #333;
+  background: rgba(10, 14, 42, 0.8);
   padding: 10px;
   border-radius: 1rem;
   overflow: hidden;
+  border: 2px solid var(--gold);
+  box-shadow: 0 0 30px rgba(255, 215, 0, 0.3);
 }
+
 .game-area h2 {
-    color: white;
+    color: var(--white);
+    text-shadow: 0 0 5px var(--gold);
 }
 
 .balance {
-  color: white;
+  color: var(--gold);
   text-align: center;
   font-size: 24px;
   margin-top: 10px;
@@ -49,21 +63,26 @@
   bottom: 10px;
   width: 40px;
   height: 40px;
-  background: blue;
+  background: var(--light-blue);
   border-radius: 50%;
   transform: translateX(-50%);
+  box-shadow: 0 0 15px var(--light-blue);
+  border: 2px solid var(--white);
 }
 
 .coin {
   position: absolute;
   width: 20px;
   height: 20px;
-  background: gold;
+  background: var(--gold);
   border-radius: 50%;
   text-align: center;
   line-height: 20px;
   font-size: 14px;
   font-weight: bold;
+  color: var(--dark-blue);
+  box-shadow: 0 0 10px var(--gold);
+  border: 1px solid var(--white);
 }
 
 .controls {
@@ -79,8 +98,17 @@
 .controls button {
   font-size: 24px;
   padding: 10px;
-  background: white;
-  border: none;
+  background: rgba(255, 255, 255, 0.2);
+  border: 1px solid var(--gold);
   cursor: pointer;
   border-radius: 5px;
+  color: var(--gold);
+  transition: all 0.3s ease;
+  backdrop-filter: blur(5px);
+}
+
+.controls button:hover {
+  background: var(--gold);
+  color: var(--dark-blue);
+  box-shadow: 0 0 15px var(--gold);
 }
