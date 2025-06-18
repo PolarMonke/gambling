@@ -1,41 +1,73 @@
+/* File: styles/GameCard.css */
 .game-card {
-    width: 90%;
-    max-width: 400px;
-    background-color: #494949;
-    text-align: center;
-    padding: 20px;
-    border-radius: 1rem;
-    margin: 0 auto;
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-}
-
-.game-card img {
+  background: rgba(0, 0, 0, 0.6);
+  border-radius: 10px;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  border: 1px solid rgba(255, 215, 0, 0.3);
+  position: relative;
+  width: 90%;
+  max-width: 400px;
+  text-align: center;
+  padding: 20px;
+  margin: 0 auto;
+  
+  &:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5);
+    border-color: var(--gold);
+  }
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, rgba(255, 215, 0, 0.1) 0%, transparent 100%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none; /* Add this line */
+  }
+  
+  &:hover::before {
+    opacity: 1;
+  }
+  
+  img {
     width: 100%;
     height: 200px;
     object-fit: cover;
     border-radius: 0.5rem;
     margin-bottom: 10px;
-}
-
-.game-card h3 {
-    margin: 0;
-    font-size: 1.2rem;
-}
-
-.play-button {
-    background-color: #218838;
-    border: none;
-    padding: 12px 20px;
-    border-radius: 0.5rem;
+  }
+  
+  h3 {
+    color: var(--gold);
+    font-size: 1.3rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  .play-button {
+    display: block;
+    width: 100%;
+    padding: 0.8rem;
+    background: linear-gradient(to right, var(--dark-red), var(--red));
     color: white;
-    font-weight: 600;
+    text-align: center;
+    text-decoration: none;
+    font-weight: bold;
+    border-radius: 5px;
+    margin-top: 1rem;
+    transition: all 0.3s ease;
+    border: none;
     cursor: pointer;
-    transition: all 0.2s ease;
-}
-
-.play-button:hover {
-    background-color: #1e7e34;
-    transform: translateY(-2px);
+    position: relative; /* Add this to ensure it's above the pseudo-element */
+    
+    &:hover {
+      background: linear-gradient(to right, var(--red), #E00);
+      box-shadow: 0 5px 15px rgba(192, 0, 0, 0.4);
+    }
+  }
 }

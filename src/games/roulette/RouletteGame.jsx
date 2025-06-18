@@ -1,10 +1,12 @@
 import React, { useEffect, useRef, useState } from 'react';
 import Matter from 'matter-js';
 import './RouletteGame.css';
+import { api } from '../../api/mockApi';
 
 export const RouletteGame = () => {
+  const [balance, setBalance] = useState(0); 
   const [players, setPlayers] = useState([
-    { id: 0, name: 'You', isUser: true, bet: 0, eliminated: false, balance: 1000 },
+    { id: 0, name: 'You', isUser: true, bet: 0, eliminated: false, balance: balance },
     { id: 1, name: 'Bot 1', isUser: false, bet: 0, eliminated: false, balance: 1000 },
     { id: 2, name: 'Bot 2', isUser: false, bet: 0, eliminated: false, balance: 1000 },
     { id: 3, name: 'Bot 3', isUser: false, bet: 0, eliminated: false, balance: 1000 },
@@ -20,11 +22,45 @@ export const RouletteGame = () => {
   const [eliminatedPlayer, setEliminatedPlayer] = useState(null);
   const [isPlayerEliminated, setIsPlayerEliminated] = useState(false);
   const [eliminatedPlayers, setEliminatedPlayers] = useState([]);
-  const [zones, setZones] = useState(null);  
+  const [zones, setZones] = useState(null); 
   
   const bottleRef = useRef(null);
   const spinInterval = useRef(null);
   const speedRef = useRef(0);
+
+  useEffect(() => {
+    fetchBalance();
+  }, []);
+
+  const fetchBalance = async () => {
+    try {
+      const data = await api.getProfile();
+      setBalance(data.balance);
+      setPlayers(prev => prev.map(p => 
+        p.id === 0 ? {...p, balance: data.balance} : p
+      ));
+    } catch (error) {
+      console.error('Failed to fetch balance:', error);
+    }
+  };
+  const updateBalance = async (amount) => {
+    try {
+      const data = await api.deposit(amount);
+      setBalance(data.newBalance);
+      return true;
+    } catch (error) {
+      console.error('Failed to update balance:', error);
+      return false;
+    }
+  };
+
+  const recordAction = async (actionName) => {
+    try {
+      await api.recordAction(actionName);
+    } catch (error) {
+      console.error('Failed to record action:', error);
+    }
+  };
 
   const calculateZones = (latestPlayers) => {
     const activePlayers = latestPlayers.filter(p => !p.eliminated);
@@ -73,6 +109,8 @@ export const RouletteGame = () => {
       updatedPlayers[i].bet = botBet;
       updatedPlayers[i].balance -= botBet;
     }
+    updateBalance(-currentBet);
+    recordAction('roulette');
 
     setPlayers(updatedPlayers);
     spinBottle();
@@ -155,6 +193,7 @@ export const RouletteGame = () => {
       const activePlayers = updatedPlayers.filter(p => !p.eliminated);
       let share = 0;
       share = Math.floor(eliminated.bet / activePlayers.length);
+      updateBalance(share);
 
       activePlayers.forEach(p => {
         p.balance += share;

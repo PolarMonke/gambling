@@ -1,9 +1,23 @@
-body {
-  background-color: #0E6220;
-  color: white;
-  font-family: "Montserrat", sans-serif;
-  font-optical-sizing: auto;
+:root {
+  --gold: #FFD700;
+  --red: #C00;
+  --dark-red: #900;
+  --black: #111;
+  --dark-blue: #0A0E2A;
+  --light-blue: #1E90FF;
+  --green: #008000;
+  --white: #FFF;
 }
-button {
-  font-family: "Montserrat", sans-serif;
+
+body {
+  background-color: var(--dark-blue);
+  color: var(--white);
+  overflow-x: hidden;
+  background-image: 
+    radial-gradient(circle at 10% 20%, rgba(255, 215, 0, 0.1) 0%, transparent 20%),
+    radial-gradient(circle at 90% 80%, rgba(255, 215, 0, 0.1) 0%, transparent 20%),
+    linear-gradient(to bottom, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.9));
+  font-family: 'Montserrat', sans-serif;
+  margin: 0;
+  padding: 0;
 }

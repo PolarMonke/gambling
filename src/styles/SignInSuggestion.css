@@ -1,54 +1,58 @@
+/* File: styles/SignInSuggestion.css */
 .sign-in-suggestion {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    gap: 50px;
-    flex-wrap: wrap;
-    overflow-x: auto;
-    margin: 50px 0px;
-}
-.block {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 50px;
+  flex-wrap: wrap;
+  margin: 4rem 0;
+  
+  .block {
     padding: 30px;
     border-radius: 1rem;
-    background-color: #494949;
+    background: rgba(0, 0, 0, 0.6);
     width: 400px;
     display: flex;
     flex-direction: column;
     justify-content: center;
     text-align: center;
-    font-size: 30pt;
-}
-.block div {
-    margin: 10px;
-}
-.block button {
-    outline: none;
-    border: none;
-    padding: 10px;
-    background-color: #00BE29;
-    border-radius: 1rem;
-    color: white;
-    font-size: 30pt;
-    cursor: pointer;
-}
-.chips {
-    width: 300px;
+    font-size: 1.5rem;
+    border: 1px solid rgba(255, 215, 0, 0.3);
+    
+    div {
+      margin: 10px;
+    }
+    
+    button {
+      background: linear-gradient(to right, var(--gold), #FFA500);
+      color: var(--black);
+      border: none;
+      padding: 15px;
+      border-radius: 1rem;
+      font-size: 1.5rem;
+      cursor: pointer;
+      font-weight: bold;
+      transition: all 0.3s ease;
+      
+      &:hover {
+        background: linear-gradient(to right, #FFA500, var(--gold));
+        box-shadow: 0 5px 15px rgba(255, 215, 0, 0.4);
+      }
+    }
+  }
+  
+  .decoration {
+    width: 150px;
     height: auto;
-    object-fit: cover;      
+    opacity: 0.7;
+    animation: float 15s infinite linear;
+  }
 }
 
-@media screen and (max-width: 1200px) {
-    .chips {
-        width: 200px;
-    }
-}
 @media screen and (max-width: 1020px) {
-    .chips {
-        width: 150px;
+  .sign-in-suggestion {
+    .decoration {
+      display: none;
     }
-}
-@media screen and (max-width: 1020px) {
-    .chips {
-        visibility: collapse;
-    }
+  }
 }

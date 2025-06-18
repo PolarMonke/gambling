@@ -1,67 +1,77 @@
+/* File: styles/SignIn.css */
 .sign-in-container {
-    max-width: 500px;
-    margin: 2rem auto;
-    padding: 2rem;
-    border-radius: 1rem;
-    background-color: #494949;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-}
-
-.form-switcher {
+  max-width: 500px;
+  margin: 2rem auto;
+  padding: 2rem;
+  border-radius: 1rem;
+  background: rgba(0, 0, 0, 0.6);
+  border: 1px solid rgba(255, 215, 0, 0.3);
+  
+  .form-switcher {
     display: flex;
     margin-bottom: 1.5rem;
-    border-bottom: 1px solid #e0e0e0;
-}
-
-.form-switcher button {
-    flex: 1;
-    padding: 0.8rem;
-    border: none;
-    background: none;
-    font-size: 1rem;
-    font-weight: 600;
-    color: #fff;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    border-bottom: 3px solid transparent;
-}
-
-.form-switcher button.active {
-    color: #00BE29;
-}
-
-.form-switcher button:hover:not(.active) {
-    color: #00BE29;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     
-}
-
-.submit-button {
+    button {
+      flex: 1;
+      padding: 0.8rem;
+      border: none;
+      background: none;
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--white);
+      cursor: pointer;
+      transition: all 0.3s ease;
+      border-bottom: 3px solid transparent;
+      
+      &.active {
+        color: var(--gold);
+        border-bottom-color: var(--gold);
+      }
+      
+      &:hover:not(.active) {
+        color: var(--gold);
+      }
+    }
+  }
+  
+  .submit-button {
     width: 100%;
     padding: 0.8rem;
     margin-top: 1.5rem;
-    background-color: #00BE29;
-    color: white;
+    background: linear-gradient(to right, var(--gold), #FFA500);
+    color: var(--black);
     border: none;
     border-radius: 6px;
     font-size: 1rem;
     font-weight: 600;
     cursor: pointer;
-    transition: background-color 0.2s;
+    transition: all 0.3s ease;
+    
+    &:hover {
+      background: linear-gradient(to right, #FFA500, var(--gold));
+      box-shadow: 0 5px 15px rgba(255, 215, 0, 0.4);
+    }
+    
+    &:disabled {
+      background: #555;
+      color: #999;
+      cursor: not-allowed;
+    }
+    
+    .spinner {
+      display: inline-block;
+      width: 1rem;
+      height: 1rem;
+      border: 2px solid rgba(0, 0, 0, 0.3);
+      border-radius: 50%;
+      border-top-color: var(--black);
+      animation: spin 1s ease-in-out infinite;
+      margin-right: 0.5rem;
+    }
+  }
 }
 
-.submit-button:hover {
-    background-color: #00BE29;
-}
-
-.submit-button:disabled {
-    background-color: #9eaf9c;
-    cursor: not-allowed;
-}
-
-.captcha-container {
-    margin: 1.5rem 0;
-    padding: 1rem;
-    border: 1px solid #e5e7eb;
-    border-radius: 6px;
-    background-color: #f9fafb;
+@keyframes spin {
+  to { transform: rotate(360deg); }
 }

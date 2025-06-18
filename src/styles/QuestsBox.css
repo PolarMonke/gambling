@@ -1,126 +1,123 @@
+/* File: styles/QuestsBox.css */
 .quest-box-container {
-    display: flex;
-    justify-content: center;
-    margin-top: 100px;
-    margin-bottom: 100px;
-    position: relative;
-}
-
-.quest-box {
-    background-color: #494949;
+  display: flex;
+  justify-content: center;
+  margin: 4rem 0;
+  position: relative;
+  
+  .quest-box {
+    background: rgba(0, 0, 0, 0.6);
     padding: 20px 30px;
     border-radius: 1rem;
     width: 80%;
     max-width: 600px;
-}
-
-.quest {
-    background-color: #323232;
-    border-radius: 1rem;
-    padding: 15px;
-    color: white;
-    margin: 10px 0;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: stretch;
-    gap: 0px;
-}
-
-.quest-info {
-    display: flex;
-    gap: 10px;
-}
-
-.quest-actions {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.reward {
-    font-weight: bold;
-    color: #218838;
-    padding: 0;
-}
-.currency {
-    vertical-align: middle;
-    width: 20px;
-}
-
-.claim-button {
-    background-color: #00BE29;
-    color: white;
-    border: none;
-    padding: 8px 12px;
-    border-radius: 1rem;
-    cursor: pointer;
-    font-weight: bold;
-}
-
-.claim-button:hover {
-    background-color: #218838;
-}
-
-.claim-button:disabled {
-    background-color: black;
-}
-
-.quest-progress {
-    width: 100%; 
-    height: 20px;
-    border-radius: 10px;
-    appearance: none; 
-    border: none;
-}
-
-.quest-progress::-webkit-progress-bar {
-    background-color: #ddd;
-    border-radius: 10px;
-}
-
-.quest-progress::-webkit-progress-value {
-    background-color: #00BE29;
-    border-radius: 10px;
-}
-
-.quest-progress::-moz-progress-bar {
-    background-color: #00BE29;
-    border-radius: 10px;
-}
-
-.chips {
+    border: 1px solid rgba(255, 215, 0, 0.3);
+    
+    .quest {
+      background-color: #323232;
+      border-radius: 1rem;
+      padding: 15px;
+      color: white;
+      margin: 10px 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: stretch;
+      gap: 10px;
+      
+      h3 {
+        color: var(--gold);
+      }
+      
+      .quest-actions {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        
+        .reward {
+          font-weight: bold;
+          color: var(--gold);
+        }
+        
+        .claim-button {
+          background: linear-gradient(to right, var(--gold), #FFA500);
+          color: var(--black);
+          border: none;
+          padding: 8px 12px;
+          border-radius: 1rem;
+          cursor: pointer;
+          font-weight: bold;
+          transition: all 0.3s ease;
+          
+          &:hover {
+            background: linear-gradient(to right, #FFA500, var(--gold));
+            box-shadow: 0 5px 15px rgba(255, 215, 0, 0.4);
+          }
+          
+          &:disabled {
+            background: #555;
+            color: #999;
+          }
+          
+          &.ready {
+            background: linear-gradient(to right, var(--dark-red), var(--red));
+            color: white;
+          }
+        }
+      }
+      
+      .quest-progress {
+        width: 100%;
+        height: 20px;
+        border-radius: 10px;
+        appearance: none;
+        border: none;
+        
+        &::-webkit-progress-bar {
+          background-color: #ddd;
+          border-radius: 10px;
+        }
+        
+        &::-webkit-progress-value {
+          background: linear-gradient(to right, var(--dark-red), var(--red));
+          border-radius: 10px;
+        }
+      }
+      
+      .progress-text {
+        text-align: right;
+        font-size: 0.9rem;
+        color: #AAA;
+      }
+    }
+  }
+  
+  .decoration {
     position: absolute;
-    width: 400px;
+    width: 150px;
     height: auto;
     top: 20%;
     z-index: -1;
-}
-#chips1 {
-    left: 0%;
-}
-#chips2 {
-    right: 0%;
-}
-@media screen and (max-width: 1200px) {
-    .chips {
-        width: 300px;
+    opacity: 0.7;
+    
+    &.chips {
+      animation: float 15s infinite linear;
+      
+      &#chips1 {
+        left: 0%;
+      }
+      
+      &#chips2 {
+        right: 0%;
+      }
     }
-    #chips1 {
-        left: -5%;
-    }
-    #chips2 {
-        right: -5%;
-    }
-}
-@media screen and (max-width: 1020px) {
-    .chips {
-        width: 150px;
-    }
-}
-@media screen and (max-width: 1020px) {
-    .chips {
-        visibility: collapse;
-    }
+  }
 }
 
+@media screen and (max-width: 1020px) {
+  .quest-box-container {
+    .decoration {
+      visibility: hidden;
+    }
+  }
+}
