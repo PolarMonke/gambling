@@ -9,6 +9,65 @@ const mockUsers = [
   }
 ];
 
+const gachaCharacters = [
+  {
+    id: 1,
+    name: "Billy Herrington",
+    rarity: 4,
+    imagePath: "characters/billy herrington.png",
+    audioPath: "audio/billy herrington.mp3"
+  },
+  {
+    id: 2,
+    name: "Van Darkholme", 
+    rarity: 4,
+    imagePath: "characters/van darkholme.png",
+    audioPath: "audio/van darkholme.mp3"
+  },
+  {
+    id: 3,
+    name: "Mark Wolf",
+    rarity: 5, 
+    imagePath: "characters/mark wolf.png",
+    audioPath: "audio/mark wolf.mp3"
+  },
+  {
+    id: 4,
+    name: "Danny Lee",
+    rarity: 5,
+    imagePath: "characters/danny lee.png",
+    audioPath: "audio/danny lee.mp3"
+  },
+  {
+    id: 5,
+    name: "Steve Harley",
+    rarity: 5,
+    imagePath: "characters/steve harley.png",
+    audioPath: "audio/steve harley.mp3"
+  },
+  {
+    id: 6,
+    name: "Brad McGuire",
+    rarity: 3,
+    imagePath: "characters/brad mcguire.png",
+    audioPath: "audio/steve brad mcguire.mp3"
+  },
+  {
+    id: 7,
+    name: "Steve Rambo",
+    rarity: 3,
+    imagePath: "characters/steve rambo.png",
+    audioPath: "audio/steve rambo.mp3"
+  },
+  {
+    id: 8,
+    name: "Rey Harley",
+    rarity: 3,
+    imagePath: "characters/rey harley.png",
+    audioPath: "audio/rey harley.mp3"
+  },
+];
+
 const mockQuests = [
   { id: 1, title: "Play 3 Slots Games", reward: 50, requiredCount: 3, currentProgress: 0 },
   { id: 2, title: "Make a Deposit", reward: 100, requiredCount: 1, currentProgress: 0 }
@@ -137,6 +196,39 @@ const recordAction = async (actionName) => {
     });
 }
 
+const pullGacha = () => {
+    const token = localStorage.getItem('authToken');
+    if (!token) throw new Error('Unauthorized');
+    
+    const userId = parseInt(token.split('-')[2]);
+    const user = mockUsers.find(u => u.id === userId);
+    if (!user) throw new Error('User not found');
+    
+    if (user.balance < 300) {
+      throw new Error('Not enough currency');
+    }
+    
+    user.balance -= 300;
+    
+    const pullRarity = () => {
+      const roll = Math.random();
+      if (roll < 0.1) return 5;  
+      if (roll < 0.3) return 4; 
+      return 3;  
+    };
+    
+    const rarity = pullRarity();
+    const charactersOfRarity = gachaCharacters.filter(c => c.rarity === rarity);
+    const pulledCharacter = charactersOfRarity[
+      Math.floor(Math.random() * charactersOfRarity.length)
+    ];
+    
+    return {
+      ...pulledCharacter,
+      newBalance: user.balance
+    };
+}
+
 const api = {
   register,
   login,
@@ -146,7 +238,8 @@ const api = {
   deposit,
   getQuests,
   completeQuest,
-  recordAction
+  recordAction,
+  pullGacha
 };
 
 export default api;

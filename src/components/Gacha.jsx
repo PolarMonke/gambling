@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import '../styles/Gacha.css';
+import { api } from '../api/mockApi';
 
 const Gacha = () => {
     const [showModal, setShowModal] = useState(false);
@@ -8,19 +9,11 @@ const Gacha = () => {
     const [isPulling, setIsPulling] = useState(false);
     const [error, setError] = useState('');
 
-    // Fetch user balance on component mount
     useEffect(() => {
         const fetchBalance = async () => {
             try {
-                const response = await fetch('http://localhost:5062/api/user/balance', {
-                    headers: {
-                        'Authorization': `Bearer ${localStorage.getItem('authToken')}`
-                    }
-                });
-                if (response.ok) {
-                    const data = await response.json();
-                    setUserBalance(data.balance);
-                }
+                const data = await api.getProfile();
+                setUserBalance(data.balance);
             } catch (err) {
                 console.error('Failed to fetch balance:', err);
             }
@@ -38,32 +31,17 @@ const Gacha = () => {
         setError('');
         
         try {
-            const response = await fetch('http://localhost:5062/api/gacha/pull', {
-                method: 'POST',
-                headers: {
-                    'Authorization': `Bearer ${localStorage.getItem('authToken')}`,
-                    'Content-Type': 'application/json'
-                }
-            });
+            const result = await api.pullGacha();
+            setPulledCharacter(result);
+            setShowModal(true);
             
-            if (response.ok) {
-                const result = await response.json();
-                setPulledCharacter(result);
-                setShowModal(true);
-                
-                // Update balance (subtract 300)
-                setUserBalance(prev => prev - 300);
-                
-                // Play character audio
-                const audio = new Audio(result.audioPath);
-                audio.play().catch(e => console.error('Audio play failed:', e));
-            } else {
-                const errorData = await response.json();
-                setError(errorData.message || 'Pull failed');
-            }
+            setUserBalance(result.newBalance);
+            
+            const audio = new Audio(result.audioPath);
+            audio.play().catch(e => console.error('Audio play failed:', e));
         } catch (error) {
             console.error('Pull failed:', error);
-            setError('Network error occurred');
+            setError(error.message || 'Pull failed');
         } finally {
             setIsPulling(false);
         }

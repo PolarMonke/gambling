@@ -101,7 +101,6 @@ export const GoldenShowerGame = () => {
                                 recordAction('coin_caught');
                             } else {
                                 updateBalance(-coin.value);
-                                recordAction('coin_missed');
                             }
                             return false;
                         }
