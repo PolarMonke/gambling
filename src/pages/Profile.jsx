@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import '../styles/Profile.css';
 import { useNavigate } from 'react-router-dom';
+import { api } from '../api/mockApi';
 
 const Profile = () => {
     const [userData, setUserData] = useState({
@@ -21,31 +22,17 @@ const Profile = () => {
     useEffect(() => {
         const fetchUserData = async () => {
             try {
-                const response = await fetch('http://localhost:5062/api/user/profile', {
-                    headers: {
-                        'Authorization': `Bearer ${localStorage.getItem('authToken')}`
-                    }
-                });
-                
-                if (!response.ok) {
-                    if (response.status === 401) {
-                        localStorage.removeItem('authToken');
-                        navigate('/signin');
-                    }
-                    throw new Error('Failed to fetch user data');
-                }
-                
-                const data = await response.json();
+                const data = await api.getProfile();
                 setUserData({
-                    login: data.login,
-                    email: data.email,
-                    balance: data.balance,
-                    creditCard: data.creditCard || {
-                        cardNumber: '',
-                        cardHolderName: '',
-                        expiryDate: '',
-                        cvv: ''
-                    }
+                login: data.login,
+                email: data.email,
+                balance: data.balance,
+                creditCard: data.creditCard || {
+                    cardNumber: '',
+                    cardHolderName: '',
+                    expiryDate: '',
+                    cvv: ''
+                }
                 });
             } catch (error) {
                 console.error('Error:', error);
@@ -59,53 +46,20 @@ const Profile = () => {
     const handleCreditCardSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await fetch('http://localhost:5062/api/user/creditcard', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${localStorage.getItem('authToken')}`
-                },
-                body: JSON.stringify(userData.creditCard)
-            });
-            
-            if (!response.ok) {
-                throw new Error('Failed to save credit card');
-            }
-            
+            await api.saveCreditCard(userData.creditCard);
             setMessage('Credit card saved successfully');
         } catch (error) {
-            console.error('Error:', error);
             setMessage(error.message);
         }
     };
 
     const handleDeposit = async (e) => {
         e.preventDefault();
-        if (!userData.creditCard.cardNumber) {
-            setMessage('Please add a credit card first');
-            return;
-        }
-        
         try {
-            const response = await fetch('http://localhost:5062/api/user/deposit', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${localStorage.getItem('authToken')}`
-                },
-                body: JSON.stringify({ amount: depositAmount })
-            });
-            
-            if (!response.ok) {
-                throw new Error('Deposit failed');
-            }
-            
-            const data = await response.json();
+            const data = await api.deposit(depositAmount);
             setUserData(prev => ({ ...prev, balance: data.newBalance }));
             setMessage(`Successfully deposited ${depositAmount}. New balance: ${data.newBalance}`);
-            setDepositAmount(0);
         } catch (error) {
-            console.error('Error:', error);
             setMessage(error.message);
         }
     };
@@ -128,6 +82,15 @@ const Profile = () => {
         }
     };
 
+    const handleLogout = async () => {
+        try {
+            await api.logout();
+            navigate('/signin');
+        } catch (error) {
+            setMessage('Logout failed: ' + error.message);
+        }
+    };
+
     return (
         <div className="profile-container">
             <h1>Profile</h1>
@@ -137,6 +100,13 @@ const Profile = () => {
                 <p><strong>Login:</strong> {userData.login}</p>
                 <p><strong>Email:</strong> {userData.email}</p>
                 <p><strong>Balance:</strong> {userData.balance}</p>
+
+                <button 
+                    className="logout-button"
+                    onClick={handleLogout}
+                >
+                    Log Out
+                </button>
             </div>
             
             <div className="credit-card-form">

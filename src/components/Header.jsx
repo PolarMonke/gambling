@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react"
 import '../styles/Header.css'
 import { Link } from "react-router-dom"
 import { Logo } from "./Logo"
+import { api } from '../api/mockApi';
 
 const Header = () => {
     const [balance, setBalance] = useState();
@@ -10,26 +11,26 @@ const Header = () => {
         return !!localStorage.getItem('authToken');
     };
 
-     useEffect(() => {
+    useEffect(() => {
         const fetchBalance = async () => {
-            if (isLoggedIn()) {
-                try {
-                    const response = await fetch('http://localhost:5062/api/user/balance', {
-                        headers: {
-                            'Authorization': `Bearer ${localStorage.getItem('authToken')}`
-                        }
-                    });
-                    if (response.ok) {
-                        const data = await response.json();
-                        setBalance(data.balance);
-                    }
-                } catch (error) {
-                    console.error('Failed to fetch balance:', error);
+            try {
+                const data = await api.getProfile();
+                setBalance(data.balance);
+            }
+            catch (error) {
+                console.error('Failed to fetch balance:', error);
+                if (error.message.includes('Unauthorized') || error.message.includes('User not found')) {
+                    localStorage.removeItem('authToken');
+                    navigate('/signin');
                 }
             }
         };
         
         fetchBalance();
+        
+        const intervalId = setInterval(fetchBalance, 5000);
+        
+        return () => clearInterval(intervalId);
     }, []);
 
     return (

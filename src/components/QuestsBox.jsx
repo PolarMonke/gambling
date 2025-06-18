@@ -1,48 +1,70 @@
+import React, { useState, useEffect } from "react";
 import "../styles/QuestsBox.css";
+import { api } from '../api/mockApi';
 
 const QuestsBox = () => {
-    const questsNum = 4;
-    const quests = [
-        {
-            "Id": 1,
-            "Title": "Deposit 1000 BYN",
-            "Reward": 50.0,
-            "ReqiredAction": 'deposit',
-            "RequiredCount": 1000
-        },
-        {
-            "Id": 2,
-            "Title": "Deposit 1000 BYN",
-            "Reward": 50.0,
-            "ReqiredAction": 'deposit',
-            "RequiredCount": 1000
-        },
-        {
-            "Id": 3,
-            "Title": "Deposit 1000 BYN",
-            "Reward": 50.0,
-            "ReqiredAction": 'deposit',
-            "RequiredCount": 1000
-        },
-        {
-            "Id": 4,
-            "Title": "Deposit 1000 BYN",
-            "Reward": 50.0,
-            "ReqiredAction": 'deposit',
-            "RequiredCount": 1000
-        },
-    ]
+    const [quests, setQuests] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+
+    const fetchQuests = async () => {
+        try {
+            setLoading(true);
+            setError(null);
+            const data = await api.getQuests();
+            setQuests(data);
+        } catch (err) {
+            setError(err.message);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    useEffect(() => {
+        fetchQuests();
+    }, []);
+
+    const handleCompleteQuest = async (questId) => {
+        try {
+            setLoading(true);
+            const result = await api.completeQuest(questId);
+            alert(`Success! You received ${result.reward} currency. New balance: ${result.newBalance}`);
+            await fetchQuests();
+        } catch (err) {
+            alert(err.message);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    if (loading) return <div className="quest-box-container">Loading quests...</div>;
+    if (error) return <div className="quest-box-container">Error: {error}</div>;
+    if (quests.length === 0) return <div className="quest-box-container">No active quests available</div>;
+
     return (
         <div className="quest-box-container">
             <div className="quest-box">
                 {quests.map((quest) => (
-                    <div key={quest.Id} className="quest">
-                        <h3>{quest.Title}</h3>
+                    <div key={quest.id} className="quest">
+                        <h3>{quest.title}</h3>
                         <div className="quest-actions">
-                            <p className="reward">Reward: {quest.Reward} <img src="src/assets/currency.png" className="currency"/></p>
-                            <button className="claim-button">Claim</button>
+                            <p className="reward">Reward: {quest.reward} $</p>
+                            <button 
+                                className={`claim-button ${quest.isReadyForReward ? 'ready' : ''}`}
+                                onClick={() => handleCompleteQuest(quest.id)}
+                                disabled={!quest.isReadyForReward || loading}
+                            >
+                                {quest.isReadyForReward ? 'Claim Reward' : 'In Progress'}
+                            </button>
                         </div>
-                        <progress className="quest-progress" value="32" max="100"></progress>
+                        <progress 
+                            className="quest-progress" 
+                            value={quest.currentProgress || 0} 
+                            max={quest.requiredCount || 1}
+                        ></progress>
+                        <div className="progress-text">
+                            {quest.currentProgress || 0}/{quest.requiredCount || 1}
+                        </div>
                     </div>
                 ))}
             </div>
@@ -50,7 +72,7 @@ const QuestsBox = () => {
             <img src="src/assets/chips.png" className="decoration chips" id="chips1" />
             <img src="src/assets/chips.png" className="decoration chips" id="chips2" />
         </div>
-    )
-}
+    );
+};
 
 export default QuestsBox;

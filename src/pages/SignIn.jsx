@@ -4,6 +4,7 @@ import LogInForm from "../components/LogInForm";
 import RegistrationForm from "../components/RegistrationForm";
 import "../styles/SignIn.css";
 import { useNavigate } from "react-router-dom";
+import { api } from '../api/mockApi';
 
 const SignIn = () => {
     const [activeForm, setActiveForm] = useState('login');
@@ -29,31 +30,15 @@ const SignIn = () => {
         console.log("Registering with data:", formData);
 
         try {
-            const response = await fetch('http://localhost:5062/api/auth/register', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    Login: formData.username,
-                    Email: formData.email,
-                    Password: formData.password
-                }),
-                credentials: 'include'
+            const data = await api.register({
+            Login: formData.username,
+            Email: formData.email,
+            Password: formData.password
             });
-
-            const data = await response.json();
-
-            if (!response.ok) {
-                throw new Error(data.message || 'Registration failed');
-            }
-
             alert('Registration successful! You can now log in.');
             setActiveForm('login');
         } catch (err) {
             setError(err.message);
-        } finally {
-            setIsLoading(false);
         }
     };
 
@@ -69,29 +54,14 @@ const SignIn = () => {
         console.log("Logging in with data:", formData);
 
         try {
-            const response = await fetch('http://localhost:5062/api/auth/login', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    Login: formData.username,
-                    Password: formData.password
-                })
+            const data = await api.login({
+            Login: formData.username,
+            Password: formData.password
             });
-
-            const data = await response.json();
-
-            if (!response.ok) {
-                throw new Error(data.message || 'Login failed');
-            }
-
             localStorage.setItem('authToken', data.token);
             navigate('/');
         } catch (err) {
             setError(err.message);
-        } finally {
-            setIsLoading(false);
         }
     };
 
