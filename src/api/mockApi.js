@@ -40,10 +40,10 @@ const gachaCharacters = [
   },
   {
     id: 5,
-    name: "Steve Harley",
+    name: "Steve Herley",
     rarity: 5,
-    imagePath: "characters/steve harley.png",
-    audioPath: "audio/steve harley.mp3"
+    imagePath: "characters/steve herley.png",
+    audioPath: "audio/steve herley.mp3"
   },
   {
     id: 6,
@@ -215,7 +215,7 @@ const pullGacha = () => {
   if (!user) throw new Error('User not found');
   
   if (user.balance < 300) {
-    throw new Error('Not enough currency');
+    throw new Error('Not enough money');
   }
   
   user.balance -= 300;
@@ -223,7 +223,7 @@ const pullGacha = () => {
   const pullRarity = () => {
     const roll = Math.random();
     if (roll < 0.1) return 5;  
-    if (roll < 0.3) return 4; 
+    if (roll < 0.4) return 4; 
     return 3;  
   };
   

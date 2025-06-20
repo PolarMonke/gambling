@@ -1,7 +1,9 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import '../styles/Captcha.css';
+import { useTranslation } from 'react-i18next';
 
 const Captcha = ({ onVerification }) => {
+    const { t } = useTranslation();
     const icons = ['👨', '👩', '👧', '👦', '👴', '👵', '🤖', '👽', '🤡'];
     const humanIcons = icons.slice(0, 6);
 
@@ -113,8 +115,8 @@ const Captcha = ({ onVerification }) => {
 
     return (
         <div className="slot-machine-container">
-            <h1>Human Verification</h1>
-            <p>Spin the slots to prove you're human (3 humans win!)</p>
+            <h1>{t("Human Verification")}</h1>
+            <p>{t("Spin the slots to prove you're human (3 humans win!)")}</p>
 
             <div className={`message ${messageClass}`}>{message}</div>
 
@@ -124,13 +126,13 @@ const Captcha = ({ onVerification }) => {
                         <div className="slot">
                             <div className="slot-reel" ref={reelsRef.current[index]}></div>
                         </div>
-                        <div className="slot-overlay">Spinning...</div>
+                        <div className="slot-overlay">{t('Spinning...')}</div>
                     </div>
                 ))}
             </div>
 
             <button onClick={spinAll} disabled={spinning}>
-                {spinning ? 'Spinning...' : 'Spin Slots'}
+                {spinning ? t('Spinning...') : t('Spin Slots')}
             </button>
         </div>
     );

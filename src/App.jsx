@@ -7,6 +7,8 @@ import { GamesPage } from './pages/GamesPage';
 import { GamePage } from './pages/GamePage';
 import { allGames } from './data/games';
 import Profile from './pages/Profile';
+import Gacha from './components/Gacha';
+import './api/i18n';
 
 function App() {
 
@@ -20,6 +22,7 @@ function App() {
             <Route path='/signin' element={<SignIn/>} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/games" element={<GamesPage />} />
+            <Route path="/gacha" element={<Gacha />} />
             {allGames.map(game => (
               <Route 
                 key={game.id}

@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import '../styles/Profile.css';
 import { useNavigate } from 'react-router-dom';
 import { api } from '../api/mockApi';
 
 const Profile = () => {
+    const {t} = useTranslation();
     const [userData, setUserData] = useState({
         login: '',
         email: '',
@@ -94,27 +96,27 @@ const Profile = () => {
 
     return (
         <div className="profile-container">
-            <h1>Profile</h1>
+            <h1>{t('Profile')}</h1>
             
             <div className="user-info">
-                <h2>User Information</h2>
-                <p><strong>Login:</strong> {userData.login}</p>
-                <p><strong>Email:</strong> {userData.email}</p>
-                <p><strong>Balance:</strong> {userData.balance}</p>
+                <h2>{t('User Information')}</h2>
+                <p><strong>{t('Login')}:</strong> {userData.login}</p>
+                <p><strong>{t('Email')}:</strong> {userData.email}</p>
+                <p><strong>{t('Balance')}:</strong> {userData.balance}</p>
 
                 <button 
                     className="logout-button"
                     onClick={handleLogout}
                 >
-                    Log Out
+                    {t('Log Out')}
                 </button>
             </div>
             
             <div className="credit-card-form">
-                <h2>Credit Card Information</h2>
+                <h2>{t('Credit Card Information')}</h2>
                 <form onSubmit={handleCreditCardSubmit}>
                     <div className="form-group">
-                        <label>Card Number:</label>
+                        <label>{t('Card Number')}:</label>
                         <input
                             type="text"
                             name="cardNumber"
@@ -125,7 +127,7 @@ const Profile = () => {
                         />
                     </div>
                     <div className="form-group">
-                        <label>Cardholder Name:</label>
+                        <label>{t('Cardholder Name')}:</label>
                         <input
                             type="text"
                             name="cardHolderName"
@@ -136,7 +138,7 @@ const Profile = () => {
                         />
                     </div>
                     <div className="form-group">
-                        <label>Expiry Date:</label>
+                        <label>{t('Expiry Date')}:</label>
                         <input
                             type="text"
                             name="expiryDate"
@@ -147,7 +149,7 @@ const Profile = () => {
                         />
                     </div>
                     <div className="form-group">
-                        <label>CVV:</label>
+                        <label>{t('CVV')}:</label>
                         <input
                             type="text"
                             name="cvv"
@@ -157,15 +159,15 @@ const Profile = () => {
                             required
                         />
                     </div>
-                    <button type="submit">Save Credit Card</button>
+                    <button type="submit">{t('Save Credit Card')}</button>
                 </form>
             </div>
             
             <div className="deposit-form">
-                <h2>Deposit Funds</h2>
+                <h2>{t('Deposit Funds')}</h2>
                 <form onSubmit={handleDeposit}>
                     <div className="form-group">
-                        <label>Amount:</label>
+                        <label>{t('Amount')}:</label>
                         <input
                             type="number"
                             value={depositAmount}
@@ -178,7 +180,7 @@ const Profile = () => {
                         type="submit" 
                         disabled={!userData.creditCard.cardNumber}
                     >
-                        Deposit
+                        {t('Deposit')}
                     </button>
                 </form>
             </div>

@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from "react";
 import "../styles/QuestsBox.css";
 import { api } from '../api/mockApi';
+import { useTranslation } from 'react-i18next';
 
 const QuestsBox = () => {
+    const { t } = useTranslation();
     const [quests, setQuests] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -36,24 +38,24 @@ const QuestsBox = () => {
         }
     };
 
-    if (loading) return <div className="quest-box-container">Loading quests...</div>;
-    if (error) return <div className="quest-box-container">Error: {error}</div>;
-    if (quests.length === 0) return <div className="quest-box-container">No active quests available</div>;
+    if (loading) return <div className="quest-box-container">{t('Loading quests...')}</div>;
+    if (error) return <div className="quest-box-container">{t('Error')}: {error}</div>;
+    if (quests.length === 0) return <div className="quest-box-container">{t('No active quests available')}</div>;
 
     return (
         <div className="quest-box-container">
             <div className="quest-box">
                 {quests.map((quest) => (
                     <div key={quest.id} className="quest">
-                        <h3>{quest.title}</h3>
+                        <h3>{t(quest.title)}</h3>
                         <div className="quest-actions">
-                            <p className="reward">Reward: {quest.reward} $</p>
+                            <p className="reward">{t('Reward')}: {quest.reward} $</p>
                             <button 
                                 className={`claim-button ${quest.isReadyForReward ? 'ready' : ''}`}
                                 onClick={() => handleCompleteQuest(quest.id)}
                                 disabled={!quest.isReadyForReward || loading}
                             >
-                                {quest.isReadyForReward ? 'Claim Reward' : 'In Progress'}
+                                {quest.isReadyForReward ? t('Claim Reward') : t('In Progress')}
                             </button>
                         </div>
                         <progress 

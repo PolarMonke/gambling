@@ -1,7 +1,9 @@
 import { useState } from "react";
 import "../styles/RegistrationForm.css";
+import { useTranslation } from 'react-i18next';
 
 const RegistrationForm = ({ setFormData }) => {
+    const { t } = useTranslation();
     const [localError, setLocalError] = useState('');
 
     const handleInputChange = (e) => {
@@ -15,7 +17,7 @@ const RegistrationForm = ({ setFormData }) => {
     return (
         <form className="registration-form">
             <div className="form-group">
-                <label>Username</label>
+                <label>{t('Username')}</label>
                 <input
                     type="text"
                     name="username"
@@ -24,7 +26,7 @@ const RegistrationForm = ({ setFormData }) => {
                 />
             </div>
             <div className="form-group">
-                <label>Email</label>
+                <label>{t('Email')}</label>
                 <input
                     type="email"
                     name="email"
@@ -33,7 +35,7 @@ const RegistrationForm = ({ setFormData }) => {
                 />
             </div>
             <div className="form-group">
-                <label>Password</label>
+                <label>{t('Password')}</label>
                 <input
                     type="password"
                     name="password"
@@ -42,7 +44,7 @@ const RegistrationForm = ({ setFormData }) => {
                 />
             </div>
             <div className="form-group">
-                <label>Confirm Password</label>
+                <label>{t('Confirm Password')}</label>
                 <input
                     type="password"
                     name="confirmPassword"

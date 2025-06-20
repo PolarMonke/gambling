@@ -1,7 +1,9 @@
 import { useEffect, useState } from 'react';
 import '../styles/Hero.css'
+import { useTranslation } from 'react-i18next';
 
 const Hero = () => {
+    const { t } = useTranslation();
     const quotes = [
     "Dream big! Bet bigger!",
     "Just one more spin bro",
@@ -9,9 +11,8 @@ const Hero = () => {
     "Success is one bet away",
     "Why wait for payday when you’ve got luck?",
     "Believe in yourself",
-    "You miss 100% of the bets you don’t place",
+    "You miss 100% of the bets you don't place",
     "J*bs are temporary! Jackpots are forever!",
-    "Your family will be proud of you",
     "Bosses hate freedom",
     "Risk is self-care",
     "Only slaves do not risk"   
@@ -28,7 +29,7 @@ const Hero = () => {
             <div className="hero">
                 <div className="main-text">
                     <div>
-                        {quote}
+                        {t(quote)}
                     </div>
                 </div>
                 <img src="src/assets/splash-image.png" className='splash-image' />

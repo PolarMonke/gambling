@@ -151,3 +151,64 @@
   .rarity-4 { border: 2px solid #a64aff; }
   .rarity-5 { border: 2px solid var(--gold); }
 }
+.rolling-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.85);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.rolling-modal-content {
+  width: 80%;
+  max-width: 800px;
+  padding: 2rem;
+  background: #1a1a2a;
+  border-radius: 10px;
+  border: 2px solid var(--gold);
+}
+
+.rolling-animation {
+  display: flex;
+  justify-content: space-around;
+  gap: 1rem;
+}
+.rolling-animation img {
+  border-radius: 1rem;
+}
+
+.rolling-character-card {
+  width: 120px;
+  height: 160px;
+  padding: 0.5rem;
+  background: #2a2a3a;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  animation: 
+    flash 0.3s infinite alternate,
+    wiggle 0.5s infinite alternate;
+}
+
+@keyframes flash {
+  0% { opacity: 0.7; }
+  100% { opacity: 1; }
+}
+
+@keyframes wiggle {
+  0% { transform: translateY(-3px); }
+  100% { transform: translateY(3px); }
+}
+
+.rolling-character-card .character-image {
+  width: 80px;
+  height: 80px;
+  object-fit: contain;
+  margin-bottom: 0.5rem;
+}

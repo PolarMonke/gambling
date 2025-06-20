@@ -5,8 +5,10 @@ import RegistrationForm from "../components/RegistrationForm";
 import "../styles/SignIn.css";
 import { useNavigate } from "react-router-dom";
 import { api } from '../api/mockApi';
+import { useTranslation } from 'react-i18next';
 
 const SignIn = () => {
+    const { t } = useTranslation();
     const [activeForm, setActiveForm] = useState('login');
     const [isCaptchaVerified, setIsCaptchaVerified] = useState(false);
     const [error, setError] = useState('');
@@ -72,13 +74,13 @@ const SignIn = () => {
                     className={activeForm === 'login' ? 'active' : ''}
                     onClick={() => handleFormSwitch('login')}
                 >
-                    Login
+                    {t('Login')}
                 </button>
                 <button 
                     className={activeForm === 'register' ? 'active' : ''}
                     onClick={() => handleFormSwitch('register')}
                 >
-                    Register
+                    {t('Register')}
                 </button>
             </div>
 
@@ -98,7 +100,7 @@ const SignIn = () => {
                 {isLoading ? (
                     <>
                         <span className="spinner"></span>
-                        Processing...
+                        {t('Processing...')}
                     </>
                 ) : activeForm === 'login' ? 'Log In' : 'Register'}
             </button>
