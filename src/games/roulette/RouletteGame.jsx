@@ -110,7 +110,7 @@ export const RouletteGame = () => {
       updatedPlayers[i].balance -= botBet;
     }
     updateBalance(-currentBet);
-    recordAction('roulette');
+    api.recordAction('roulette');
 
     setPlayers(updatedPlayers);
     spinBottle();

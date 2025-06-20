@@ -59,6 +59,7 @@ const Profile = () => {
             const data = await api.deposit(depositAmount);
             setUserData(prev => ({ ...prev, balance: data.newBalance }));
             setMessage(`Successfully deposited ${depositAmount}. New balance: ${data.newBalance}`);
+            api.recordAction('deposit');
         } catch (error) {
             setMessage(error.message);
         }

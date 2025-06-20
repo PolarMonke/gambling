@@ -9,6 +9,7 @@ export const GoldenShowerGame = () => {
     const [balance, setBalance] = useState(0);
     const playerXRef = useRef(50);
     const gameLoopRef = useRef(null);
+    const PLAYER_WIDTH = 10;
     
     useEffect(() => {
         fetchBalance();
@@ -91,27 +92,52 @@ export const GoldenShowerGame = () => {
         if (!gameStarted) return;
 
         const updateGame = () => {
-            setCoins((prevCoins) =>
-                prevCoins
-                    .map((coin) => ({ ...coin, y: coin.y + 1.5 }))
-                    .filter((coin) => {
-                        if (coin.y > 90) {
-                            if (Math.abs(coin.x - playerXRef.current) < 5) {
-                                updateBalance(coin.value);
-                                recordAction('coin_caught');
-                            } else {
-                                updateBalance(-coin.value);
-                            }
-                            return false;
-                        }
-                        return true;
-                    })
-            );
+            setCoins((prevCoins) => {
+                const remainingCoins = [];
+                const fallenCoins = [];
+
+                for (const coin of prevCoins) {
+                const newY = coin.y + 1.5;
+                if (newY > 90) {
+                    fallenCoins.push({ ...coin, y: newY });
+                } else {
+                    remainingCoins.push({ ...coin, y: newY });
+                }
+                }
+
+                fallenCoins.forEach((coin) => {
+                
+                if (
+                    coin.x >= playerXRef.current &&
+                    coin.x <= playerXRef.current + PLAYER_WIDTH
+                ) {
+                    updateBalance(coin.value);
+                    recordAction('coin_caught');
+                } else {
+                    updateBalance(-coin.value);
+                }
+                });
+
+            return remainingCoins;
+        });
+
             gameLoopRef.current = requestAnimationFrame(updateGame);
-        };
+            };
+
 
         gameLoopRef.current = requestAnimationFrame(updateGame);
         return () => cancelAnimationFrame(gameLoopRef.current);
+    }, [gameStarted]);
+
+    useEffect(() => {
+        const handleKeyDown = (e) => {
+            if (!gameStarted) return;
+            if (e.key === 'ArrowLeft') movePlayer('left');
+            if (e.key === 'ArrowRight') movePlayer('right');
+        };
+
+        window.addEventListener('keydown', handleKeyDown);
+        return () => window.removeEventListener('keydown', handleKeyDown);
     }, [gameStarted]);
 
     return (

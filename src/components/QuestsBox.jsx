@@ -28,7 +28,6 @@ const QuestsBox = () => {
         try {
             setLoading(true);
             const result = await api.completeQuest(questId);
-            alert(`Success! You received ${result.reward} currency. New balance: ${result.newBalance}`);
             await fetchQuests();
         } catch (err) {
             alert(err.message);
