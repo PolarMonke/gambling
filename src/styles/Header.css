@@ -65,7 +65,7 @@ header {
   header {
     flex-direction: column;
     margin-bottom: 20px;
-    
+    align-items: center;
     .header-items {
       flex-direction: column;
       gap: 10px;

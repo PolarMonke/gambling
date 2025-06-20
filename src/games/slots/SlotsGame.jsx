@@ -3,16 +3,6 @@ import './SlotsGame.css';
 import { api } from '../../api/mockApi';
 
 const SYMBOLS = ['🍒', '🍋', '🍊', '🍇', '🔔', '7', '💰', '🎰'];
-const WIN_COMBINATIONS = [
-  ['🍒', '🍒', '🍒'],
-  ['🍋', '🍋', '🍋'],
-  ['🍊', '🍊', '🍊'],
-  ['🍇', '🍇', '🍇'],
-  ['🔔', '🔔', '🔔'],
-  ['7', '7', '7'],
-  ['💰', '💰', '💰'],
-  ['🎰', '🎰', '🎰']
-];
 
 export const SlotsGame = () => {
   const [reels, setReels] = useState(['🍒', '🍋', '🍊']);
@@ -23,17 +13,16 @@ export const SlotsGame = () => {
   const [winAmount, setWinAmount] = useState(0);
 
   useEffect(() => {
+    const fetchBalance = async () => {
+      try {
+        const data = await api.getProfile();
+        setBalance(data.balance);
+      } catch (error) {
+        console.error('Failed to fetch balance:', error);
+      }
+    };
     fetchBalance();
   }, []);
-
-  const fetchBalance = async () => {
-    try {
-      const data = await api.getProfile();
-      setBalance(data.balance);
-    } catch (error) {
-      console.error('Failed to fetch balance:', error);
-    }
-  };
 
   const updateBalance = async (amount) => {
     try {
@@ -46,9 +35,9 @@ export const SlotsGame = () => {
     }
   };
 
-  const recordAction = async (actionName) => {
+  const recordAction = async () => {
     try {
-      await api.recordAction(actionName);
+      await api.recordAction('slots');
     } catch (error) {
       console.error('Failed to record action:', error);
     }
@@ -56,62 +45,74 @@ export const SlotsGame = () => {
 
   const spin = async () => {
     if (spinning || balance < bet) return;
-    
+
     setSpinning(true);
     setMessage('Spinning...');
     setWinAmount(0);
 
-    const deductionSuccess = await updateBalance(-bet);
-    if (!deductionSuccess) {
+    const deducted = await updateBalance(-bet);
+    if (!deducted) {
       setSpinning(false);
       setMessage('Transaction failed');
       return;
     }
 
-    await recordAction('slots');
+    await recordAction();
+
+    const finalReels = [
+      SYMBOLS[Math.floor(Math.random() * SYMBOLS.length)],
+      SYMBOLS[Math.floor(Math.random() * SYMBOLS.length)],
+      SYMBOLS[Math.floor(Math.random() * SYMBOLS.length)]
+    ];
 
     const spinDuration = 3000;
     const startTime = Date.now();
-    
+
     const spinInterval = setInterval(() => {
       const elapsed = Date.now() - startTime;
       const progress = Math.min(elapsed / spinDuration, 1);
-      
-      const speed = 100 * (1 - progress * 0.9);
-      
-      setReels([
-        SYMBOLS[Math.floor(Math.random() * SYMBOLS.length)],
-        SYMBOLS[Math.floor(Math.random() * SYMBOLS.length)],
-        SYMBOLS[Math.floor(Math.random() * SYMBOLS.length)]
-      ]);
 
-      if (progress === 1) {
+      if (progress < 1) {
+        setReels([
+          SYMBOLS[Math.floor(Math.random() * SYMBOLS.length)],
+          SYMBOLS[Math.floor(Math.random() * SYMBOLS.length)],
+          SYMBOLS[Math.floor(Math.random() * SYMBOLS.length)]
+        ]);
+      } else {
         clearInterval(spinInterval);
-        checkWin();
+        setReels(finalReels);
+        finalizeSpin(finalReels);
         setSpinning(false);
       }
-    }, 50);
+    }, 75);
   };
 
-  const checkWin = async () => {
-    const isWin = WIN_COMBINATIONS.some(combo => 
-      combo.every((symbol, i) => symbol === reels[i])
-    );
+  const finalizeSpin = async (finalReels) => {
+    const counts = finalReels.reduce((acc, symbol) => {
+      acc[symbol] = (acc[symbol] || 0) + 1;
+      return acc;
+    }, {});
 
-    if (isWin) {
-      const winMultiplier = reels[0] === '7' ? 10 : 5;
-      const win = bet * winMultiplier;
+    const maxCount = Math.max(...Object.values(counts));
+
+    if (maxCount === 2) {
+      const win = bet * 2;
       setWinAmount(win);
       await updateBalance(win);
-      setMessage(`You won ${win} credits!`);
+      setMessage(`Matched 2! You won ${win} credits!`);
+    } else if (maxCount === 3) {
+      const win = bet * 10;
+      setWinAmount(win);
+      await updateBalance(win);
+      setMessage(`JACKPOT! You won ${win} credits!`);
     } else {
       setMessage('Try again!');
     }
   };
 
-  const changeBet = (amount) => {
-    const newBet = bet + amount;
-    if (newBet >= 1 && newBet <= 20 && newBet <= balance) {
+  const changeBet = (delta) => {
+    const newBet = bet + delta;
+    if (newBet >= 1 && newBet <= balance) {
       setBet(newBet);
     }
   };
@@ -126,38 +127,23 @@ export const SlotsGame = () => {
             </div>
           ))}
         </div>
-        
         <div className="game-info">
           <div className="credits">Balance: {balance}</div>
           <div className="bet">Bet: {bet}</div>
           <div className="win-amount">{winAmount > 0 && `+${winAmount}`}</div>
         </div>
       </div>
-      
+
       <div className="message">{message}</div>
-      
+
       <div className="controls">
-        <button 
-          onClick={() => changeBet(-1)} 
-          disabled={bet <= 1 || spinning}
-        >
-          -
-        </button>
-        
-        <button 
-          onClick={spin} 
-          disabled={spinning || balance < bet}
-          className="spin-button"
-        >
+        <button onClick={() => changeBet(-bet+1)} disabled={spinning}>Reset</button>
+        <button onClick={() => changeBet(-1)} disabled={bet <= 1 || spinning}>-</button>
+        <button onClick={spin} disabled={spinning || balance < bet} className="spin-button">
           {spinning ? '🌀' : 'SPIN'}
         </button>
-        
-        <button 
-          onClick={() => changeBet(1)} 
-          disabled={bet >= 20 || bet >= balance || spinning}
-        >
-          +
-        </button>
+        <button onClick={() => changeBet(1)} disabled={ bet >= balance || spinning}>+</button>
+        <button onClick={() => changeBet(balance-bet)} disabled={bet >= balance || spinning}>All-In</button>
       </div>
     </div>
   );

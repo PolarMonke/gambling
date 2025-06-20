@@ -1,13 +1,34 @@
+import { useEffect, useState } from 'react';
 import '../styles/Hero.css'
 
 const Hero = () => {
+    const quotes = [
+    "Dream big! Bet bigger!",
+    "Just one more spin bro",
+    "W*rk hard? Play harder!",
+    "Success is one bet away",
+    "Why wait for payday when you’ve got luck?",
+    "Believe in yourself",
+    "You miss 100% of the bets you don’t place",
+    "J*bs are temporary! Jackpots are forever!",
+    "Your family will be proud of you",
+    "Bosses hate freedom",
+    "Risk is self-care",
+    "Only slaves do not risk"   
+    ];
+    const [quote, setQuote] = useState('');
+
+    useEffect(() => {
+        const randomIndex = Math.floor(Math.random() * quotes.length);
+        setQuote(quotes[randomIndex]);
+    }, []);
+
     return (
         <div className='hero-container'>
             <div className="hero">
                 <div className="main-text">
                     <div>
-                        Become a
-                        <br /> Gambler
+                        {quote}
                     </div>
                 </div>
                 <img src="src/assets/splash-image.png" className='splash-image' />

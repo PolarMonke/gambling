@@ -10,6 +10,7 @@
   color: white;
   font-family: 'Arial', sans-serif;
   box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+  margin-bottom: 100px;
 }
 
 .slots-display {
@@ -32,7 +33,11 @@
 .reel {
   width: 150px;
   height: 150px;
-  background: white;
+  background: white;  
+  font-family: "Rye", serif;
+  font-weight: 700;
+  font-style: normal;
+  color: #ea0f0f;
   border-radius: 15px;
   display: flex;
   justify-content: center;

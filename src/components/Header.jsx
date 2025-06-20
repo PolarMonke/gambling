@@ -41,7 +41,7 @@ const Header = () => {
                 <Link to={'/gacha'} className="link">Gacha</Link>
                 {isLoggedIn() ? (
                     <>
-                        <div className="balance">Balance: {balance}</div>
+                        <div className="balance">Balance: {balance} $</div>
                         <Link to={'/profile'} className="link">Profile</Link>
                     </>
                 ) : (
