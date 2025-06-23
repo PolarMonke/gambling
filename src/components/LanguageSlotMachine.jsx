@@ -5,7 +5,12 @@ import '../styles/LanguageSlotMachine.css';
 const LANGUAGES = [
   { code: 'en', name: 'English', flag: '🇬🇧' },
   { code: 'be', name: 'Belarusian', flag: '🇧🇾' },
-  // Add more languages if needed
+  { code: 'ch', name: 'Chinese', flag: '🇨🇳' },
+  { code: 'fr', name: 'French', flag: '🇫🇷' },
+  { code: 'it', name: 'Italian', flag: '🇮🇹' },
+  { code: 'jp', name: 'Japanese', flag: '🇯🇵' },
+  { code: 'pl', name: 'Polish', flag: '🇵🇱' },
+  { code: 'sp', name: 'Spanish', flag: '🇪🇸' }
 ];
 
 const LanguageSlotMachine = () => {
