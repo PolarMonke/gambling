@@ -5,7 +5,8 @@ const mockUsers = [
     email: 'test@test.com', 
     password: 'test123', 
     balance: 1000,
-    creditCard: null
+    creditCard: null,
+    inventory: {}
   }
 ];
 
@@ -50,7 +51,7 @@ const gachaCharacters = [
     name: "Brad McGuire",
     rarity: 3,
     imagePath: "characters/brad mcguire.png",
-    audioPath: "audio/steve brad mcguire.mp3"
+    audioPath: "audio/brad mcguire.mp3"
   },
   {
     id: 7,
@@ -233,11 +234,32 @@ const pullGacha = () => {
     Math.floor(Math.random() * charactersOfRarity.length)
   ];
   
+  if (!user.inventory) user.inventory = {};
+  user.inventory[pulledCharacter.id] = (user.inventory[pulledCharacter.id] || 0) + 1;
+
   return {
     ...pulledCharacter,
-    newBalance: user.balance
+    newBalance: user.balance,
+    count: user.inventory[pulledCharacter.id]
   };
 }
+
+const getInventory = async () => {
+  await simulateNetworkDelay();
+  const token = localStorage.getItem('authToken') || mockAuthToken;
+  if (!token) throw new Error('Unauthorized');
+  
+  const userId = parseInt(token.split('-')[2]);
+  const user = mockUsers.find(u => u.id === userId);
+  if (!user) throw new Error('User not found');
+  
+  const inventory = Object.entries(user.inventory || {}).map(([id, count]) => {
+    const character = gachaCharacters.find(c => c.id === parseInt(id));
+    return character ? { ...character, count } : null;
+  }).filter(Boolean);
+  
+  return inventory;
+};
 
 const api = {
   register,
@@ -249,7 +271,8 @@ const api = {
   getQuests,
   completeQuest,
   recordAction,
-  pullGacha
+  pullGacha,
+  getInventory
 };
 
 export default api;

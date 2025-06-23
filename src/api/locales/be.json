@@ -41,6 +41,8 @@
     "Register": "Зарэгістравацца",
     "Processing...": "Апрацоўка...",
     "Please verify you are not a robot": "Калі ласка, пацвердзіце, што вы не робат",
+    "Inventory": "Інвентар",
+    "Owned":"У наяўнасці",
     
     "User Information": "Інфармацыя пра карыстальніка",
     "Credit Card Information": "Інфармацыя пра крэдытную картку",
@@ -57,14 +59,14 @@
     "Game not found": "Гульня не знойдзена",
     "Loading game...": "Загрузка гульні...",
 
-    "Billy Herrington": "Білі Херынгтан",
+    "Billy Herrington": "Білі Гэрынгтан",
     "Van Darkholme": "Ван Даркхолм",
     "Mark Wolf": "Марк Вульф",
     "Danny Lee": "Дэні Лі",
-    "Steve Herley": "Стыў Хэрлі",
+    "Steve Herley": "Стыў Гэрлі",
     "Brad McGuire": "Брэд МакГуайр",
     "Steve Rambo": "Стыў Рамба",
-    "Rey Harley": "Рэй Харлі",
+    "Rey Harley": "Рэй Гарлі",
 
     "Play 3 Slots Games": "Пакруціць слоты 3 разы",
     "Make a Deposit": "Зрабіць дэпазіт",

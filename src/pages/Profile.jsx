@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import '../styles/Profile.css';
 import { useNavigate } from 'react-router-dom';
 import { api } from '../api/mockApi';
+import Inventory from '../components/Inventory';
 
 const Profile = () => {
     const {t} = useTranslation();
@@ -186,6 +187,11 @@ const Profile = () => {
             </div>
             
             {message && <div className="message">{message}</div>}
+
+            <div className="inventory-section">
+                <h2>{t('Inventory')}</h2>
+                <Inventory />
+            </div>
         </div>
     );
 };

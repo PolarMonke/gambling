@@ -212,3 +212,9 @@
   object-fit: contain;
   margin-bottom: 0.5rem;
 }
+
+.character-count {
+  color: var(--gold);
+  font-weight: bold;
+  margin-top: 0.5rem;
+}

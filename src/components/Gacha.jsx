@@ -188,6 +188,11 @@ const Gacha = () => {
                         >
                             {t('Awesome!')}
                         </button>
+                        {pulledCharacter.count > 1 && (
+                            <div className="character-count">
+                                {t('You now have')} {pulledCharacter.count}
+                            </div>
+                        )}
                     </div>
                 </div>
             )}
