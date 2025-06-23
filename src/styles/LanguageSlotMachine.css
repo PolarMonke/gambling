@@ -1,0 +1,57 @@
+.language-slot-machine {
+  display: flex;
+  align-items: center;
+  margin-left: 10px;
+}
+
+.language-slot {
+  background: rgba(0, 0, 0, 0.7);
+  color: var(--white);
+  border: 1px solid var(--gold);
+  border-radius: 5px;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 80px;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.language-slot:hover:not(:disabled) {
+  background: var(--gold);
+  color: var(--black);
+}
+
+.language-slot:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.language-slot.spinning {
+  background: var(--gold);
+  color: var(--black);
+}
+
+.language-slot.spinning .language-flag,
+.language-slot.spinning .language-code {
+  animation: slotSpin 0.1s infinite;
+}
+
+@keyframes slotSpin {
+  0% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
+  100% { transform: translateY(0); }
+}
+
+.language-flag {
+  font-size: 1.2rem;
+}
+
+.language-code {
+  font-size: 0.9rem;
+}

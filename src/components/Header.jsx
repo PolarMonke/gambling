@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { Logo } from "./Logo";
 import { api } from '../api/mockApi';
 import '../styles/Header.css';
+import LanguageSlotMachine from "./LanguageSlotMachine";
 
 const Header = () => {
     const [balance, setBalance] = useState();
@@ -59,22 +60,7 @@ const Header = () => {
                 ) : (
                     <Link to={'/signin'} className="link">{t('Sign In')}</Link>
                 )}
-                <div className="language-switcher">
-                    <button 
-                        onClick={() => changeLanguage('en')} 
-                        className={i18n.language === 'en' ? 'active' : ''}
-                        disabled={i18n.language === 'en'}
-                    >
-                        EN
-                    </button>
-                    <button 
-                        onClick={() => changeLanguage('be')} 
-                        className={i18n.language === 'be' ? 'active' : ''}
-                        disabled={i18n.language === 'be'}
-                    >
-                        BE
-                    </button>
-                </div>
+                <LanguageSlotMachine />
             </div>
         </header>
     );
