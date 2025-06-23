@@ -5,10 +5,10 @@ Welcome to a world where quests, gacha, and slot machines teach you the true mea
 
 ## 🧭 Features
 
-- 🎯 Complete quests to level up your gambling skills  
-- 🎰 Spin slots to register, change languages, or just for fun  
-- 👯‍♂️ Roll gacha to unlock iconic *gachi* characters  
-- 💥 Try your luck in **Backshot Roulette**
+- Complete quests to level up your gambling skills  
+- Spin slots to register, change languages, or just for fun  
+- Roll gacha to unlock iconic *gachi* characters  
+- Try your luck in **Backshot Roulette**
 
 ---
 
