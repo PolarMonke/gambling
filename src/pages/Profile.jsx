@@ -22,20 +22,31 @@ const Profile = () => {
     const [message, setMessage] = useState('');
     const navigate = useNavigate();
 
+    const [adminPanelActive, setAdminPanelActive] = useState(false);
+    const [allUsers, setAllUsers] = useState([]);
+    const [newUser, setNewUser] = useState({
+        username: '',
+        email: '',
+        password: '',
+        balance: 0,
+        isAdmin: false
+    });
+
     useEffect(() => {
         const fetchUserData = async () => {
             try {
                 const data = await api.getProfile();
                 setUserData({
-                login: data.login,
-                email: data.email,
-                balance: data.balance,
-                creditCard: data.creditCard || {
-                    cardNumber: '',
-                    cardHolderName: '',
-                    expiryDate: '',
-                    cvv: ''
-                }
+                    login: data.login,
+                    email: data.email,
+                    balance: data.balance,
+                    isAdmin: data.isAdmin || false,
+                    creditCard: data.creditCard || {
+                        cardNumber: '',
+                        cardHolderName: '',
+                        expiryDate: '',
+                        cvv: ''
+                    }
                 });
             } catch (error) {
                 console.error('Error:', error);
@@ -94,6 +105,63 @@ const Profile = () => {
             setMessage('Logout failed: ' + error.message);
         }
     };
+    
+    const handleBuyAdmin = async () => {
+        try {
+            const result = await api.buyAdmin();
+            setUserData(prev => ({
+                ...prev,
+                balance: result.newBalance,
+                isAdmin: true
+            }));
+            setMessage('Congratulations! You are now an admin.');
+        } catch (error) {
+            setMessage(error.message);
+        }
+    };
+
+    const toggleAdminPanel = async () => {
+        if (!adminPanelActive) {
+            try {
+                const result = await api.getAllUsers();
+                setAllUsers(result.users);
+                setAdminPanelActive(true);
+            } catch (error) {
+                setMessage(error.message);
+            }
+        } else {
+            setAdminPanelActive(false);
+        }
+    };
+
+    const handleCreateUser = async (e) => {
+        e.preventDefault();
+        try {
+            await api.adminCreateUser(newUser);
+            setMessage('User created successfully');
+            // Refresh users list
+            const result = await api.getAllUsers();
+            setAllUsers(result.users);
+            // Reset form
+            setNewUser({
+                username: '',
+                email: '',
+                password: '',
+                balance: 0,
+                isAdmin: false
+            });
+        } catch (error) {
+            setMessage(error.message);
+        }
+    };
+
+    const handleNewUserChange = (e) => {
+        const { name, value, type, checked } = e.target;
+        setNewUser(prev => ({
+            ...prev,
+            [name]: type === 'checkbox' ? checked : value
+        }));
+    };
 
     return (
         <div className="profile-container">
@@ -105,6 +173,25 @@ const Profile = () => {
                 <p><strong>{t('Email')}:</strong> {userData.email}</p>
                 <p><strong>{t('Balance')}:</strong> {userData.balance}</p>
 
+                {!userData.isAdmin && (
+                    <button 
+                        className="buy-admin-button"
+                        onClick={handleBuyAdmin}
+                        disabled={userData.balance < 10000}
+                    >
+                        {t('Buy Admin Status (10,000)')}
+                    </button>
+                )}
+
+                {userData.isAdmin && (
+                    <button 
+                        className="admin-panel-button"
+                        onClick={toggleAdminPanel}
+                    >
+                        {adminPanelActive ? t('Hide Admin Panel') : t('Show Admin Panel')}
+                    </button>
+                )}
+                
                 <button 
                     className="logout-button"
                     onClick={handleLogout}
@@ -112,6 +199,96 @@ const Profile = () => {
                     {t('Log Out')}
                 </button>
             </div>
+
+            {adminPanelActive && (
+                <div className="admin-panel">
+                    <h2>{t('Admin Panel')}</h2>
+                    
+                    <div className="users-list">
+                        <h3>{t('All Users')}</h3>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Username</th>
+                                    <th>Email</th>
+                                    <th>Balance</th>
+                                    <th>Admin</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {allUsers.map(user => (
+                                    <tr key={user.id}>
+                                        <td>{user.id}</td>
+                                        <td>{user.username}</td>
+                                        <td>{user.email}</td>
+                                        <td>{user.balance}</td>
+                                        <td>{user.isAdmin ? 'Yes' : 'No'}</td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div className="create-user-form">
+                        <h3>{t('Create New User')}</h3>
+                        <form onSubmit={handleCreateUser}>
+                            <div className="form-group">
+                                <label>{t('Username')}:</label>
+                                <input
+                                    type="text"
+                                    name="username"
+                                    value={newUser.username}
+                                    onChange={handleNewUserChange}
+                                    required
+                                />
+                            </div>
+                            <div className="form-group">
+                                <label>{t('Email')}:</label>
+                                <input
+                                    type="email"
+                                    name="email"
+                                    value={newUser.email}
+                                    onChange={handleNewUserChange}
+                                    required
+                                />
+                            </div>
+                            <div className="form-group">
+                                <label>{t('Password')}:</label>
+                                <input
+                                    type="password"
+                                    name="password"
+                                    value={newUser.password}
+                                    onChange={handleNewUserChange}
+                                    required
+                                />
+                            </div>
+                            <div className="form-group">
+                                <label>{t('Initial Balance')}:</label>
+                                <input
+                                    type="number"
+                                    name="balance"
+                                    value={newUser.balance}
+                                    onChange={handleNewUserChange}
+                                    min="0"
+                                />
+                            </div>
+                            <div className="form-group checkbox">
+                                <label>
+                                    <input
+                                        type="checkbox"
+                                        name="isAdmin"
+                                        checked={newUser.isAdmin}
+                                        onChange={handleNewUserChange}
+                                    />
+                                    {t('Make Admin')}
+                                </label>
+                            </div>
+                            <button type="submit">{t('Create User')}</button>
+                        </form>
+                    </div>
+                </div>
+            )}
             
             <div className="credit-card-form">
                 <h2>{t('Credit Card Information')}</h2>

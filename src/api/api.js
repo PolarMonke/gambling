@@ -13,7 +13,6 @@ const handleResponse = async (response) => {
   return response.json();
 };
 
-// Individual functions
 const register = async ({ Login: username, Email: email, Password: password }) => {
   const response = await fetch(`${API_BASE_URL}/register`, {
     method: 'POST',
@@ -50,6 +49,7 @@ const getProfile = async () => {
     login: data.login,
     email: data.email,
     balance: data.balance,
+    isAdmin: data.isAdmin,
     creditCard: data.creditCard ? JSON.parse(data.creditCard) : null
   };
 };
@@ -129,7 +129,34 @@ const getInventory = async () => {
   return data.inventory;
 };
 
-// Export as an object (same as mockApi)
+const buyAdmin = async () => {
+  const response = await fetch(`${API_BASE_URL}/buy_admin`, {
+    method: 'POST',
+    headers: getAuthHeader()
+  });
+  const data = await handleResponse(response);
+  return data;
+};
+
+const getAllUsers = async () => {
+  const response = await fetch(`${API_BASE_URL}/admin/users`, {
+    headers: getAuthHeader()
+  });
+  return handleResponse(response);
+};
+
+const adminCreateUser = async (userData) => {
+  const response = await fetch(`${API_BASE_URL}/admin/create_user`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      ...getAuthHeader()
+    },
+    body: JSON.stringify(userData)
+  });
+  return handleResponse(response);
+};
+
 const api = {
   register,
   login,
@@ -141,9 +168,11 @@ const api = {
   completeQuest,
   recordAction,
   pullGacha,
-  getInventory
+  getInventory,
+  buyAdmin,
+  getAllUsers,
+  adminCreateUser
 };
 
-// Same exports as mockApi
 export default api;
 export { api };
