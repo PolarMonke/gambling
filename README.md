@@ -1,12 +1,38 @@
-# React + Vite
+# 🎰 Gambling Learning Web App  
+**Built with React + Vite**
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Welcome to a world where quests, gacha, and slot machines teach you the true meaning of luck.
 
-Currently, two official plugins are available:
+## 🧭 Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- Complete quests to level up your gambling skills  
+- Spin slots to register, change languages, or just for fun  
+- Roll gacha to unlock iconic *gachi* characters  
+- Try your luck in **Backshot Roulette**
 
-## Expanding the ESLint configuration
+---
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+### 🎮 Screenshots
+
+#### Main Interface
+![Main Screen](https://github.com/user-attachments/assets/d8b39fac-b245-4d14-8512-33541434801a)
+
+#### Slot Actions
+![Slot Interface](https://github.com/user-attachments/assets/26b953e2-eb42-42cf-81e5-cdc14d5737e3)
+
+#### Gacha Time
+![Gacha Characters](https://github.com/user-attachments/assets/cea59b32-cc4b-402e-92e5-18c7f3c9951d)
+
+#### Backshot Roulette
+![Backshot Roulette](https://github.com/user-attachments/assets/7d18140a-b714-41fb-b8a2-fce53a01aea3)
+
+---
+
+### 🛠 Tech Stack
+
+- React  
+- Vite  
+- CSS animations  
+- Pure randomness ✨
+
+---
