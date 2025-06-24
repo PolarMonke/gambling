@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import '../styles/Profile.css';
 import { useNavigate } from 'react-router-dom';
-import { api } from '../api/mockApi';
+import { api } from '../api/api';
 import Inventory from '../components/Inventory';
 
 const Profile = () => {

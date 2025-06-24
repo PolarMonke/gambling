@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Hero from '../components/Hero';
 import SignInSuggestion from '../components/SignInSuggestion';
 import QuestsBox from '../components/QuestsBox';
@@ -7,7 +7,7 @@ import Gacha from '../components/Gacha';
 
 const Home = () => {
   const isLoggedIn = () => {
-      return !!localStorage.getItem('authToken');
+    return !!localStorage.getItem('authToken');
   };
   
   return (

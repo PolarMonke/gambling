@@ -1,17 +1,21 @@
 import React, { useEffect, useState } from "react";
 import { useTranslation } from 'react-i18next';
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Logo } from "./Logo";
-import { api } from '../api/mockApi';
+import { api } from '../api/api';
 import '../styles/Header.css';
 import LanguageSlotMachine from "./LanguageSlotMachine";
 
 const Header = () => {
     const [balance, setBalance] = useState();
     const { t, i18n } = useTranslation();
+    const navigate = useNavigate();
+    const [isAuthenticated, setIsAuthenticated] = useState(false);
 
-    const isLoggedIn = () => {
-        return !!localStorage.getItem('authToken');
+    const checkAuth = () => {
+        const authStatus = !!localStorage.getItem('authToken');
+        setIsAuthenticated(authStatus);
+        return authStatus;
     };
 
     const changeLanguage = (lng) => {
@@ -25,16 +29,22 @@ const Header = () => {
     };
 
     useEffect(() => {
+
+        checkAuth();
+
         const fetchBalance = async () => {
-            try {
+            if (checkAuth()) {
+                try {   
                 const data = await api.getProfile();
                 setBalance(data.balance);
-            }
-            catch (error) {
-                console.error('Failed to fetch balance:', error);
-                if (error.message.includes('Unauthorized') || error.message.includes('User not found')) {
+                }
+                catch (error) {
+                console.error('Error fetching balance:', error);
+                if (error.message.includes('Token')) {
                     localStorage.removeItem('authToken');
+                    setIsAuthenticated(false);
                     navigate('/signin');
+                }
                 }
             }
         };
@@ -52,7 +62,7 @@ const Header = () => {
             <div className="header-items">
                 <Link to={'/games'} className="link">{t('Games')}</Link>
                 <Link to={'/gacha'} className="link">{t('Gacha')}</Link>
-                {isLoggedIn() ? (
+                {isAuthenticated ? (
                     <>
                         <div className="balance">{t('Balance')}: {balance} $</div>
                         <Link to={'/profile'} className="link">{t('Profile')}</Link>

@@ -4,7 +4,8 @@ import LogInForm from "../components/LogInForm";
 import RegistrationForm from "../components/RegistrationForm";
 import "../styles/SignIn.css";
 import { useNavigate } from "react-router-dom";
-import { api } from '../api/mockApi';
+import { api } from '../api/api';
+import { useAuth } from '../contexts/AuthContext';
 import { useTranslation } from 'react-i18next';
 
 const SignIn = () => {
@@ -15,6 +16,7 @@ const SignIn = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [formData, setFormData] = useState({});
     const navigate = useNavigate();
+    const { login } = useAuth();
 
     const handleFormSwitch = (formType) => {
         setActiveForm(formType);
@@ -29,18 +31,18 @@ const SignIn = () => {
         setIsLoading(true);
         setError('');
 
-        console.log("Registering with data:", formData);
-
         try {
             const data = await api.register({
-            Login: formData.username,
-            Email: formData.email,
-            Password: formData.password
+                Login: formData.username,
+                Email: formData.email,
+                Password: formData.password
             });
-            alert('Registration successful! You can now log in.');
+            alert(t('Registration successful! You can now log in.'));
             setActiveForm('login');
         } catch (err) {
             setError(err.message);
+        } finally {
+            setIsLoading(false);
         }
     };
 
@@ -53,17 +55,19 @@ const SignIn = () => {
         setIsLoading(true);
         setError('');
 
-        console.log("Logging in with data:", formData);
-
         try {
             const data = await api.login({
-            Login: formData.username,
-            Password: formData.password
+                Login: formData.username,
+                Password: formData.password
             });
             localStorage.setItem('authToken', data.token);
+            localStorage.setItem('user', JSON.stringify(data.user));
+            login(data.token, data.user);
             navigate('/');
         } catch (err) {
             setError(err.message);
+        } finally {
+            setIsLoading(false);
         }
     };
 

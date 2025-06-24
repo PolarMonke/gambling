@@ -9,18 +9,21 @@ import { allGames } from './data/games';
 import Profile from './pages/Profile';
 import Gacha from './components/Gacha';
 import './api/i18n';
+import { AuthProvider } from './contexts/AuthContext';
+import { ProtectedRoute } from './components/ProtectedRoute';
 
 function App() {
 
   return (
     <div>
+      <AuthProvider>
       <Router>
       <Header />
         <main>
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path='/signin' element={<SignIn/>} />
-            <Route path="/profile" element={<Profile />} />
+            <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
             <Route path="/games" element={<GamesPage />} />
             <Route path="/gacha" element={<Gacha />} />
             {allGames.map(game => (
@@ -33,6 +36,7 @@ function App() {
           </Routes>
         </main>
       </Router>
+      </AuthProvider>
     </div>
   )
 }

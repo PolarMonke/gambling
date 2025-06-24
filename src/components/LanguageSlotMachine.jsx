@@ -10,7 +10,9 @@ const LANGUAGES = [
   { code: 'it', name: 'Italian', flag: '🇮🇹' },
   { code: 'jp', name: 'Japanese', flag: '🇯🇵' },
   { code: 'pl', name: 'Polish', flag: '🇵🇱' },
-  { code: 'sp', name: 'Spanish', flag: '🇪🇸' }
+  { code: 'sp', name: 'Spanish', flag: '🇪🇸' },
+  { code: 'ps', name: 'Prison', flag: '🔐' },
+  { code: 'gay', name: 'Gay', flag: '🏳️‍🌈' }
 ];
 
 const LanguageSlotMachine = () => {

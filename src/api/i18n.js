@@ -9,6 +9,8 @@ import itTranslations from './locales/it.json';
 import jpTranslations from './locales/jp.json';
 import plTranslations from './locales/pl.json';
 import spTranslations from './locales/sp.json';
+import psTranslations from './locales/ps.json';
+import gyTranslations from './locales/gy.json';
 
 const initI18n = i18n
   .use(LanguageDetector)
@@ -22,7 +24,9 @@ const initI18n = i18n
       it: { translation: itTranslations },
       jp: { translation: jpTranslations },
       pl: { translation: plTranslations },
-      sp: { translation: spTranslations }
+      sp: { translation: spTranslations },
+      ps: { translation: psTranslations },
+      gy: { translation: gyTranslations }
     },
     fallbackLng: 'en',
     interpolation: {

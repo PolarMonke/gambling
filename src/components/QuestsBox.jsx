@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "../styles/QuestsBox.css";
-import { api } from '../api/mockApi';
+import { api } from '../api/api';
 import { useTranslation } from 'react-i18next';
 
 const QuestsBox = () => {

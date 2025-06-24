@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { api } from '../api/mockApi';
+import { api } from '../api/api';
 import '../styles/Inventory.css';
 
 const Inventory = () => {
